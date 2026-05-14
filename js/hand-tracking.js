@@ -72,6 +72,13 @@ async function init() {
   let dwellStart = 0;
   const RING_CIRC = 125.6; // 2*pi*20
 
+  // Car-rotate gesture state — when the index fingertip is over the
+  // car stage, horizontal movement turns into Y-axis rotation instead
+  // of dwell-click.
+  let overCar = false;
+  let lastCarX = 0;
+  const ROTATE_SENS = 0.9; // deg per pixel of finger travel
+
   function setDwellProgress(p) {
     progress.setAttribute("stroke-dashoffset", String(RING_CIRC * (1 - p)));
   }
@@ -104,29 +111,50 @@ async function init() {
         cursor.style.opacity = "1";
 
         // Find what's under the cursor
-        const el = document
-          .elementFromPoint(smooth.x, smooth.y);
+        const el = document.elementFromPoint(smooth.x, smooth.y);
+        const carStageEl = el ? el.closest(".car-stage") : null;
         const target = el ? el.closest(SELECTABLE) : null;
 
-        if (target) {
-          if (target !== dwellTarget) {
-            dwellTarget = target;
-            dwellStart = now;
-            setDwellProgress(0);
+        if (carStageEl && !el?.closest(".rotate-badge")) {
+          // Drag rotation: convert horizontal finger motion into rotation
+          if (!overCar) {
+            overCar = true;
+            lastCarX = smooth.x;
+            carStageEl.classList.add("dragging");
           } else {
-            const elapsed = now - dwellStart;
-            const p = Math.min(1, elapsed / DWELL_MS);
-            setDwellProgress(p);
-            if (p >= 1) {
-              fireSelect(dwellTarget);
-              // After firing, suspend dwell briefly to prevent re-trigger
-              dwellTarget = null;
-              dwellStart = now + 600;
-              setDwellProgress(0);
+            const dx = smooth.x - lastCarX;
+            if (Math.abs(dx) > 0.1 && window.HEX && window.HEX.carRotateBy) {
+              window.HEX.carRotateBy(dx * ROTATE_SENS);
             }
+            lastCarX = smooth.x;
           }
-        } else {
           if (dwellTarget) clearDwell();
+        } else {
+          if (overCar) {
+            overCar = false;
+            document.querySelectorAll(".car-stage.dragging")
+              .forEach((s) => s.classList.remove("dragging"));
+          }
+          if (target) {
+            if (target !== dwellTarget) {
+              dwellTarget = target;
+              dwellStart = now;
+              setDwellProgress(0);
+            } else {
+              const elapsed = now - dwellStart;
+              const p = Math.min(1, elapsed / DWELL_MS);
+              setDwellProgress(p);
+              if (p >= 1) {
+                fireSelect(dwellTarget);
+                // After firing, suspend dwell briefly to prevent re-trigger
+                dwellTarget = null;
+                dwellStart = now + 600;
+                setDwellProgress(0);
+              }
+            }
+          } else {
+            if (dwellTarget) clearDwell();
+          }
         }
       } else {
         cursor.style.opacity = "0.25";

@@ -135,6 +135,72 @@
     });
   }
 
+  /* 360° drag-based rotation — pointer drag (mouse + touch) and an
+     exposed API used by hand-tracking.js for hand gestures. */
+  var rotateBadge = document.querySelector(".rotate-badge");
+  var carStage = document.getElementById("carStage");
+  var carRotation = 0;
+  var dragActive = false;
+  var dragStartX = 0;
+  var dragStartRot = 0;
+  var DRAG_SENS = 0.6; // degrees per pixel
+
+  function setCarRotation(deg) {
+    carRotation = deg;
+    if (carStage) {
+      carStage.style.setProperty("--car-rotate", carRotation + "deg");
+    }
+  }
+
+  if (carStage) {
+    carStage.addEventListener("pointerdown", function (e) {
+      // Ignore drag start when interacting with the badge — let it click.
+      if (e.target.closest(".rotate-badge")) return;
+      dragActive = true;
+      dragStartX = e.clientX;
+      dragStartRot = carRotation;
+      carStage.classList.add("dragging");
+      try { carStage.setPointerCapture(e.pointerId); } catch (_) {}
+    });
+    carStage.addEventListener("pointermove", function (e) {
+      if (!dragActive) return;
+      var dx = e.clientX - dragStartX;
+      setCarRotation(dragStartRot + dx * DRAG_SENS);
+    });
+    function endDrag(e) {
+      if (!dragActive) return;
+      dragActive = false;
+      carStage.classList.remove("dragging");
+      try { carStage.releasePointerCapture(e.pointerId); } catch (_) {}
+    }
+    carStage.addEventListener("pointerup", endDrag);
+    carStage.addEventListener("pointercancel", endDrag);
+  }
+
+  /* Badge: click to snap rotation back to 0 (resets car orientation) */
+  if (rotateBadge && carStage) {
+    rotateBadge.addEventListener("click", function (e) {
+      e.stopPropagation();
+      // Smooth reset by transitioning the CSS var via a brief animation.
+      var img = carStage.querySelector(".car-image");
+      var tint = carStage.querySelector(".car-tint");
+      if (img) img.style.transition = "transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)";
+      if (tint) tint.style.transition = "transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)";
+      setCarRotation(0);
+      setTimeout(function () {
+        if (img) img.style.transition = "";
+        if (tint) tint.style.transition = "";
+      }, 650);
+    });
+  }
+
+  // Expose API for hand-tracking.js
+  window.HEX = window.HEX || {};
+  window.HEX.carRotateBy = function (deltaDeg) { setCarRotation(carRotation + deltaDeg); };
+  window.HEX.carRotateReset = function () { setCarRotation(0); };
+  window.HEX.carStage = carStage;
+  window.HEX.dragSensitivity = DRAG_SENS;
+
   /* -------- Circuit page: track selection -------- */
   var trackGrid = document.getElementById("trackGrid");
   if (trackGrid) {
