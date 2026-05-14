@@ -87,6 +87,14 @@
             <div class="car-stage" id="carStage">
               <div class="car-image" id="carImage" aria-label="F1 car preview"></div>
               <div class="car-tint" id="carTint" aria-hidden="true"></div>
+              <div class="car-wheels-layer" aria-hidden="true">
+                <div class="wheel-slot wheel-slot--front">
+                  <img class="wheel-slot-img" id="frontWheelImg" alt="" />
+                </div>
+                <div class="wheel-slot wheel-slot--rear">
+                  <img class="wheel-slot-img" id="rearWheelImg" alt="" />
+                </div>
+              </div>
               <div class="car-shadow" aria-hidden="true"></div>
               <div class="rotate-badge" aria-hidden="true">360°</div>
             </div>
@@ -97,7 +105,7 @@
           <aside class="panel-card panel-right">
             <h3 class="panel-title">Wheel</h3>
             <div class="wheel-stack" id="wheelStack">
-              <button class="wheel-card active" data-wheel="0" aria-label="Wheel red sidewall">
+              <button class="wheel-card" data-wheel="0" aria-label="Wheel red sidewall">
                 <span class="wheel-img" data-wheel-img="0"></span>
               </button>
               <button class="wheel-card" data-wheel="1" aria-label="Wheel yellow sidewall">
