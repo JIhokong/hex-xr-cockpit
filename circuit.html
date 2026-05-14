@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Circuit · HEX</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topbar">
+        <div class="brand">
+          <img class="brand-mark" src="assets/logo.png" alt="HEX" />
+          <span class="brand-sub">HEX XR Cockpit System</span>
+        </div>
+        <div class="nav-right">
+          <nav class="nav-links">
+            <a href="index.html">Connect</a>
+            <a href="customize.html">Customize</a>
+            <a href="circuit.html" class="active">Circuit</a>
+            <a href="race.html">Race</a>
+          </nav>
+          <button class="menu-btn" aria-label="Menu">
+            <span></span><span></span>
+          </button>
+        </div>
+      </header>
+
+      <main class="page">
+        <h1 class="headline left">
+          Choose your <span class="soft">circuit</span>.
+        </h1>
+
+        <div class="circuit-head">
+          <div class="meta">Step 03 — Map Real Space to F1 Track</div>
+          <div class="meta">
+            Room scanned · <strong style="color:var(--ink)">5.2 × 4.1 m</strong>
+          </div>
+        </div>
+
+        <div class="circuit-grid" id="trackGrid">
+          <!-- Card -->
+          <button class="track active" data-track="monaco">
+            <span class="track-badge">Selected</span>
+            <svg viewBox="0 0 220 130" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M 20 90 Q 30 110 60 105 L 100 70 Q 120 55 140 65 L 170 80 Q 195 90 195 60 L 180 35 Q 150 20 120 40 L 80 55 Q 50 65 30 50 L 20 40 Z"
+                fill="none"
+                stroke="#1a1a1a"
+                stroke-width="3"
+                stroke-linejoin="round"
+                stroke-linecap="round"
+              />
+              <circle cx="20" cy="90" r="4" fill="#e63b2e" />
+            </svg>
+            <div class="track-name">Monaco</div>
+            <div class="track-country">Circuit de Monaco · MC</div>
+            <div class="track-stats">
+              <div class="track-stat">Length<b>3.337 km</b></div>
+              <div class="track-stat">Turns<b>19</b></div>
+              <div class="track-stat">Diff<b>Hard</b></div>
+            </div>
+          </button>
+
+          <button class="track" data-track="silverstone">
+            <svg viewBox="0 0 220 130" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M 25 75 L 70 35 Q 90 25 110 40 L 150 65 Q 180 75 185 100 Q 170 115 140 105 L 100 95 Q 65 105 40 95 Q 18 88 25 75 Z"
+                fill="none"
+                stroke="#1a1a1a"
+                stroke-width="3"
+                stroke-linejoin="round"
+                stroke-linecap="round"
+              />
+              <circle cx="25" cy="75" r="4" fill="#e63b2e" />
+            </svg>
+            <div class="track-name">Silverstone</div>
+            <div class="track-country">Silverstone Circuit · GB</div>
+            <div class="track-stats">
+              <div class="track-stat">Length<b>5.891 km</b></div>
+              <div class="track-stat">Turns<b>18</b></div>
+              <div class="track-stat">Diff<b>Medium</b></div>
+            </div>
+          </button>
+
+          <button class="track" data-track="suzuka">
+            <svg viewBox="0 0 220 130" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M 30 95 Q 20 75 45 65 L 80 55 Q 95 40 80 30 Q 60 22 75 50 L 110 70 Q 140 85 165 70 L 195 50 Q 205 75 180 90 L 140 100 Q 100 115 60 105 Q 35 100 30 95 Z"
+                fill="none"
+                stroke="#1a1a1a"
+                stroke-width="3"
+                stroke-linejoin="round"
+                stroke-linecap="round"
+              />
+              <circle cx="30" cy="95" r="4" fill="#e63b2e" />
+            </svg>
+            <div class="track-name">Suzuka</div>
+            <div class="track-country">Suzuka International · JP</div>
+            <div class="track-stats">
+              <div class="track-stat">Length<b>5.807 km</b></div>
+              <div class="track-stat">Turns<b>18</b></div>
+              <div class="track-stat">Diff<b>Hard</b></div>
+            </div>
+          </button>
+
+          <button class="track" data-track="spa">
+            <svg viewBox="0 0 220 130" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M 20 95 Q 35 60 75 55 L 110 50 Q 135 35 165 50 Q 195 70 180 95 Q 160 110 130 100 Q 100 90 70 100 Q 35 110 20 95 Z"
+                fill="none"
+                stroke="#1a1a1a"
+                stroke-width="3"
+                stroke-linejoin="round"
+                stroke-linecap="round"
+              />
+              <circle cx="20" cy="95" r="4" fill="#e63b2e" />
+            </svg>
+            <div class="track-name">Spa-Francorchamps</div>
+            <div class="track-country">Spa · BE</div>
+            <div class="track-stats">
+              <div class="track-stat">Length<b>7.004 km</b></div>
+              <div class="track-stat">Turns<b>20</b></div>
+              <div class="track-stat">Diff<b>Hard</b></div>
+            </div>
+          </button>
+
+          <button class="track" data-track="monza">
+            <svg viewBox="0 0 220 130" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M 25 90 L 60 35 Q 75 20 95 35 L 120 60 Q 150 75 180 60 Q 200 75 185 100 L 140 110 Q 80 115 35 105 Q 18 100 25 90 Z"
+                fill="none"
+                stroke="#1a1a1a"
+                stroke-width="3"
+                stroke-linejoin="round"
+                stroke-linecap="round"
+              />
+              <circle cx="25" cy="90" r="4" fill="#e63b2e" />
+            </svg>
+            <div class="track-name">Monza</div>
+            <div class="track-country">Autodromo di Monza · IT</div>
+            <div class="track-stats">
+              <div class="track-stat">Length<b>5.793 km</b></div>
+              <div class="track-stat">Turns<b>11</b></div>
+              <div class="track-stat">Diff<b>Medium</b></div>
+            </div>
+          </button>
+
+          <button class="track" data-track="hex">
+            <span class="track-badge">New</span>
+            <svg viewBox="0 0 220 130" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M 110 25 L 175 60 L 175 105 L 110 140 L 45 105 L 45 60 Z"
+                transform="translate(0,-15) scale(1,0.85)"
+                fill="none"
+                stroke="#e63b2e"
+                stroke-width="3"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M 70 75 L 110 50 L 150 75 L 150 95 L 110 115 L 70 95 Z"
+                fill="none"
+                stroke="#1a1a1a"
+                stroke-width="3"
+                stroke-linejoin="round"
+                stroke-linecap="round"
+              />
+            </svg>
+            <div class="track-name">HEX Lab</div>
+            <div class="track-country">Procedural · Your Room</div>
+            <div class="track-stats">
+              <div class="track-stat">Length<b>Adaptive</b></div>
+              <div class="track-stat">Turns<b>Auto</b></div>
+              <div class="track-stat">Diff<b>Custom</b></div>
+            </div>
+          </button>
+        </div>
+
+        <div class="scan-notice">
+          <div>
+            <div class="copy">
+              <span class="dot"></span>Live mapping: your space is being
+              translated into circuit geometry.
+              <small>
+                Walls become barriers, floor becomes tarmac. Move freely —
+                XR will guide you back when you reach a virtual edge.
+              </small>
+            </div>
+          </div>
+          <a href="race.html" class="cta">
+            Convert Space <span class="chev">»</span>
+          </a>
+        </div>
+
+        <div class="foot">
+          <span class="live">LiDAR active · 12.4k anchor points</span>
+          <span>HEX/03 — Circuit</span>
+        </div>
+      </main>
+    </div>
+
+    <script src="js/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Customize · HEX</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topbar">
+        <div class="brand">
+          <img class="brand-mark" src="assets/logo.png" alt="HEX" />
+          <span class="brand-sub">HEX XR Cockpit System</span>
+        </div>
+        <div class="nav-right">
+          <nav class="nav-links">
+            <a href="index.html">Connect</a>
+            <a href="customize.html" class="active">Customize</a>
+            <a href="circuit.html">Circuit</a>
+            <a href="race.html">Race</a>
+          </nav>
+          <button class="menu-btn" aria-label="Menu">
+            <span></span><span></span>
+          </button>
+        </div>
+      </header>
+
+      <main class="page">
+        <h1 class="headline left">Build your <span class="soft">machine</span>.</h1>
+        <div class="sub-headline" style="text-align:left; margin-top:10px;">
+          Step 02 — Vehicle Configuration
+        </div>
+
+        <div class="customize-grid">
+          <div class="car-stage">
+            <div class="stage-meta">
+              Spec Series
+              <strong id="modelName">HEX-F1 R7 Prototype</strong>
+            </div>
+
+            <!-- F1 car SVG illustration -->
+            <svg id="carSvg" viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#ffffff" stop-opacity="0.35" />
+                  <stop offset="1" stop-color="#000000" stop-opacity="0.15" />
+                </linearGradient>
+                <linearGradient id="shadowGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#000" stop-opacity="0.25" />
+                  <stop offset="1" stop-color="#000" stop-opacity="0" />
+                </linearGradient>
+              </defs>
+
+              <!-- Ground shadow -->
+              <ellipse cx="400" cy="245" rx="320" ry="14" fill="url(#shadowGrad)" />
+
+              <!-- Rear wing -->
+              <rect id="rearWing" x="640" y="92" width="58" height="10" rx="2" fill="var(--car-color, #e63b2e)" />
+              <rect x="650" y="102" width="38" height="42" fill="#1a1a1a" />
+              <rect x="645" y="142" width="48" height="6" fill="#1a1a1a" />
+
+              <!-- Main body -->
+              <path
+                id="carBody"
+                d="M 90 170 Q 110 130 180 125 L 320 120 Q 340 95 410 95 L 540 100 Q 600 105 640 140 L 700 150 Q 720 158 720 175 L 720 195 L 90 195 Z"
+                fill="var(--car-color, #e63b2e)"
+              />
+              <path
+                d="M 90 170 Q 110 130 180 125 L 320 120 Q 340 95 410 95 L 540 100 Q 600 105 640 140 L 700 150 Q 720 158 720 175 L 720 195 L 90 195 Z"
+                fill="url(#bodyGrad)"
+              />
+
+              <!-- Cockpit / halo -->
+              <path
+                d="M 360 90 Q 410 50 470 70 Q 490 80 490 110 L 360 110 Z"
+                fill="#1a1a1a"
+              />
+              <ellipse cx="425" cy="92" rx="32" ry="14" fill="#0a0a0a" />
+              <path
+                d="M 395 110 Q 425 60 460 110"
+                stroke="#2a2a2a"
+                stroke-width="3"
+                fill="none"
+              />
+
+              <!-- Sidepod air intakes -->
+              <path d="M 380 130 L 470 130 L 460 155 L 390 155 Z" fill="#1a1a1a" />
+
+              <!-- Front nose detail -->
+              <rect x="84" y="166" width="12" height="20" fill="#1a1a1a" />
+
+              <!-- Front wing -->
+              <rect id="frontWing" x="40" y="180" width="80" height="6" rx="2" fill="var(--car-color, #e63b2e)" />
+              <rect x="48" y="186" width="68" height="14" fill="#1a1a1a" />
+              <rect x="40" y="200" width="80" height="4" rx="1" fill="var(--car-color, #e63b2e)" />
+
+              <!-- Tires -->
+              <g id="tireFront">
+                <circle cx="200" cy="205" r="38" fill="#0a0a0a" />
+                <circle cx="200" cy="205" r="22" fill="#1f1f1f" />
+                <circle cx="200" cy="205" r="8" fill="#3a3a3a" />
+              </g>
+              <g id="tireRear">
+                <circle cx="610" cy="205" r="42" fill="#0a0a0a" />
+                <circle cx="610" cy="205" r="24" fill="#1f1f1f" />
+                <circle cx="610" cy="205" r="9" fill="#3a3a3a" />
+              </g>
+
+              <!-- Livery accent line -->
+              <path
+                d="M 110 175 L 640 165"
+                stroke="#fff"
+                stroke-width="2"
+                fill="none"
+                opacity="0.5"
+              />
+
+              <!-- Number plate -->
+              <text
+                x="330"
+                y="172"
+                fill="#fff"
+                font-family="-apple-system, sans-serif"
+                font-weight="900"
+                font-size="32"
+                font-style="italic"
+              >
+                07
+              </text>
+              <text
+                x="540"
+                y="168"
+                fill="#fff"
+                font-family="-apple-system, sans-serif"
+                font-weight="800"
+                font-size="13"
+                letter-spacing="2"
+              >
+                HEX
+              </text>
+            </svg>
+
+            <div class="stage-rotate" aria-hidden="true">
+              <button title="Rotate left">‹</button>
+              <button title="Reset">○</button>
+              <button title="Rotate right">›</button>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h2 class="panel-title">Customize your F1 machine</h2>
+
+            <div class="panel-section">
+              <div class="panel-label">Livery Color</div>
+              <div class="swatch-row" id="colorRow">
+                <button class="swatch active" data-color="#e63b2e" style="background:#e63b2e"></button>
+                <button class="swatch" data-color="#1a1a1a" style="background:#1a1a1a"></button>
+                <button class="swatch" data-color="#0033a0" style="background:#0033a0"></button>
+                <button class="swatch" data-color="#00a651" style="background:#00a651"></button>
+                <button class="swatch" data-color="#ffcc00" style="background:#ffcc00"></button>
+                <button class="swatch" data-color="#7d2ae8" style="background:#7d2ae8"></button>
+                <button class="swatch" data-color="#f5f5f5" style="background:#f5f5f5; box-shadow:0 0 0 1.5px #ddd"></button>
+              </div>
+            </div>
+
+            <div class="panel-section">
+              <div class="panel-label">Power Unit</div>
+              <div class="option-row" data-group="engine">
+                <button class="opt active" data-engine="balanced">
+                  Balanced<span>V6 · 850hp</span>
+                </button>
+                <button class="opt" data-engine="speed">
+                  Top Speed<span>V6 · 920hp</span>
+                </button>
+                <button class="opt" data-engine="agile">
+                  Agile<span>V6 · 780hp</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="panel-section">
+              <div class="panel-label">Tire Compound</div>
+              <div class="option-row" data-group="tire">
+                <button class="opt active" data-tire="soft">
+                  Soft<span>Red · Grip</span>
+                </button>
+                <button class="opt" data-tire="medium">
+                  Medium<span>Yellow · Balance</span>
+                </button>
+                <button class="opt" data-tire="hard">
+                  Hard<span>White · Endurance</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="panel-section">
+              <div class="panel-label">Performance Stats</div>
+              <div class="stat-row">
+                <div class="stat">
+                  <div class="stat-name">Top Speed</div>
+                  <div class="stat-val" id="statSpeed">348<span style="font-size:13px;color:var(--muted)"> km/h</span></div>
+                  <div class="stat-bar"><i style="width:78%" id="barSpeed"></i></div>
+                </div>
+                <div class="stat">
+                  <div class="stat-name">Cornering</div>
+                  <div class="stat-val" id="statCorner">82<span style="font-size:13px;color:var(--muted)"> pt</span></div>
+                  <div class="stat-bar"><i style="width:82%" id="barCorner"></i></div>
+                </div>
+                <div class="stat">
+                  <div class="stat-name">Stability</div>
+                  <div class="stat-val" id="statStab">74<span style="font-size:13px;color:var(--muted)"> pt</span></div>
+                  <div class="stat-bar"><i style="width:74%" id="barStab"></i></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel-foot">
+              <a href="circuit.html" class="cta">
+                Continue <span class="chev">»</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="foot">
+          <span class="live">Build saved to garage · HEX cloud</span>
+          <span>HEX/02 — Vehicle</span>
+        </div>
+      </main>
+    </div>
+
+    <script src="js/main.js"></script>
+  </body>
+</html>

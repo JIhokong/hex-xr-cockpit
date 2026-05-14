@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HEX — XR F1 Cockpit System</title>
+    <meta
+      name="description"
+      content="HEX — XR helmet + interactive handle. Turn your room into an F1 circuit."
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topbar">
+        <div class="brand">
+          <img class="brand-mark" src="assets/logo.png" alt="HEX" />
+          <span class="brand-sub">HEX XR Cockpit System</span>
+        </div>
+
+        <div class="nav-right">
+          <nav class="nav-links">
+            <a href="index.html" class="active">Connect</a>
+            <a href="customize.html">Customize</a>
+            <a href="circuit.html">Circuit</a>
+            <a href="race.html">Race</a>
+          </nav>
+          <button class="menu-btn" aria-label="Menu">
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </header>
+
+      <main class="page">
+        <h1 class="headline">
+          Hi! Welcome <span class="soft" id="userName">Jiho</span>
+        </h1>
+
+        <div class="welcome-grid">
+          <div class="devices">
+            <div class="device-card">
+              <div class="device-stage">
+                <span class="device-glow" aria-hidden="true"></span>
+                <div class="device-img helmet" aria-label="XR Helmet"></div>
+              </div>
+              <div class="device-caption">
+                Interactive XR Driving<br />Environment
+              </div>
+            </div>
+            <div class="device-card">
+              <div class="device-stage">
+                <span class="device-glow" aria-hidden="true"></span>
+                <div class="device-img handle" aria-label="Interactive Handle"></div>
+              </div>
+              <div class="device-caption">
+                Immersive racing<br />experience
+              </div>
+            </div>
+          </div>
+
+          <div class="welcome-right">
+            <h2>Are you ready for two devices?</h2>
+            <p>
+              Please check the connection status of the XR helmet and
+              interactive handle. When you are ready, your space will be
+              converted into an F1 circuit.
+            </p>
+          </div>
+
+          <!-- Red connector line: arrow points from right text toward devices -->
+          <div class="connector" aria-hidden="true">
+            <img class="connector-line" src="assets/line.png" alt="" />
+          </div>
+        </div>
+
+        <div class="bottom-right">
+          <a href="customize.html" class="cta" id="readyBtn">
+            Yes, I'm Ready <span class="chev">»</span>
+          </a>
+        </div>
+
+        <div class="foot">
+          <span class="live">XR helmet detected · Handle paired</span>
+          <span>HEX/01 — Onboarding</span>
+        </div>
+      </main>
+    </div>
+
+    <script src="js/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,5 @@
+# Local dev tooling (preview server, harness configs)
+.claude/
+
+# macOS
+.DS_Store
