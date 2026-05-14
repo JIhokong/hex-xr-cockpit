@@ -175,10 +175,19 @@ button {
   letter-spacing: -0.03em;
   margin: 6px 0 0;
   line-height: 1.05;
+  background: linear-gradient(
+    90deg,
+    #000000 0%,
+    #000000 20%,
+    #e8e8e8 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .headline .soft {
-  color: var(--muted);
+  color: transparent;
 }
 
 .headline.left {
@@ -204,6 +213,7 @@ button {
   gap: 60px;
   flex: 1;
   position: relative;
+  transform: translateY(-20px);
 }
 
 .devices {
@@ -224,14 +234,14 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 360px;
-  height: 360px;
+  width: 288px;
+  height: 288px;
   margin: 0 auto 22px;
 }
 
 .device-card:nth-child(2) .device-stage {
-  width: 320px;
-  height: 320px;
+  width: 256px;
+  height: 256px;
 }
 
 .device-glow {
@@ -259,6 +269,16 @@ button {
   background-color: transparent;
   mix-blend-mode: multiply;
   filter: contrast(1.02);
+  -webkit-mask-image: radial-gradient(
+    ellipse at center,
+    black 55%,
+    transparent 85%
+  );
+  mask-image: radial-gradient(
+    ellipse at center,
+    black 55%,
+    transparent 85%
+  );
   transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
@@ -285,19 +305,19 @@ button {
 /* Crop the helmet portion of the reference image.
    Reference is 5760x3240; helmet bbox ~ x:272-1396, y:1077-2200. */
 .device-img.helmet {
-  width: 360px;
-  height: 360px;
-  background-size: 1613px auto;
-  background-position: -54px -275px;
+  width: 288px;
+  height: 288px;
+  background-size: 1290px auto;
+  background-position: -43px -220px;
 }
 
 /* Crop the handle portion.
    Handle bbox ~ x:1615-2646, y:1257-2114. */
 .device-img.handle {
-  width: 320px;
-  height: 320px;
-  background-size: 1728px auto;
-  background-position: -480px -346px;
+  width: 256px;
+  height: 256px;
+  background-size: 1382px auto;
+  background-position: -384px -277px;
 }
 
 .device-caption {
@@ -309,8 +329,9 @@ button {
 
 .welcome-right {
   position: relative;
-  padding-left: 40px;
+  padding-left: 160px;
   z-index: 2;
+  transform: translateY(-23px);
 }
 
 .welcome-right h2 {
@@ -320,6 +341,7 @@ button {
   letter-spacing: -0.01em;
   margin: 0 0 16px;
   line-height: 1.15;
+  white-space: nowrap;
 }
 
 .welcome-right p {
@@ -340,11 +362,12 @@ button {
 
 .connector-line {
   position: absolute;
-  top: 22%;
+  top: 38%;
   right: 0;
-  width: 52%;
+  width: 48%;
   height: auto;
   display: block;
+  mix-blend-mode: multiply;
 }
 
 /* ====== CTA pill button ====== */
@@ -410,7 +433,7 @@ button {
 .bottom-right {
   position: absolute;
   right: 0;
-  bottom: 0;
+  bottom: 16%;
 }
 
 /* ====== Customize page ====== */
@@ -1035,10 +1058,10 @@ button {
   .shell { padding: 24px 32px 32px; }
   .headline { font-size: 42px; }
   .welcome-grid { gap: 30px; }
-  .device-card .device-stage { width: 300px; height: 300px; }
-  .device-card:nth-child(2) .device-stage { width: 280px; height: 280px; }
-  .device-img.helmet { width: 300px; height: 300px; background-size: 1344px auto; background-position: -45px -229px; }
-  .device-img.handle { width: 280px; height: 280px; background-size: 1512px auto; background-position: -420px -303px; }
+  .device-card .device-stage { width: 240px; height: 240px; }
+  .device-card:nth-child(2) .device-stage { width: 224px; height: 224px; }
+  .device-img.helmet { width: 240px; height: 240px; background-size: 1075px auto; background-position: -36px -183px; }
+  .device-img.handle { width: 224px; height: 224px; background-size: 1210px auto; background-position: -336px -242px; }
 }
 
 @media (max-width: 900px) {
