@@ -6,117 +6,74 @@
     <title>Race · HEX</title>
     <link rel="stylesheet" href="css/style.css" />
   </head>
-  <body>
-    <div class="shell">
-      <header class="topbar">
-        <div class="brand">
-          <img class="brand-mark" src="assets/logo.png" alt="HEX" />
-          <span class="brand-sub">HEX XR Cockpit System</span>
+  <body class="race-body">
+    <main class="race-stage" id="raceStage">
+      <!-- Stage 1: Start prompt -->
+      <section class="race-screen race-screen--start active" id="raceStartScreen">
+        <div class="race-bg race-bg--start"></div>
+        <div class="race-overlay"></div>
+        <div class="race-start-content">
+          <h1 class="race-start-title">Start your driver experience</h1>
+          <p class="race-start-sub">Are you ready?</p>
+          <button class="race-start-btn" id="raceStartBtn">Start</button>
         </div>
-        <div class="nav-right">
-          <nav class="nav-links">
-            <a href="index.html">Connect</a>
-            <a href="customize.html">Customize</a>
-            <a href="circuit.html">Circuit</a>
-            <a href="race.html" class="active">Race</a>
-          </nav>
-          <button class="menu-btn" aria-label="Menu">
-            <span></span><span></span>
-          </button>
-        </div>
-      </header>
+        <a class="race-back" href="circuit.html" aria-label="Back to Circuit">‹ Back</a>
+      </section>
 
-      <main class="page">
-        <h1 class="headline left">
-          Lights out. <span class="soft">You're on the grid.</span>
-        </h1>
-        <div class="sub-headline" style="text-align:left; margin-top:10px;">
-          Step 04 — Cockpit Live · Monaco
-        </div>
+      <!-- 3-2-1-GO countdown -->
+      <div class="countdown-overlay" id="countdownOverlay" aria-hidden="true">
+        <div class="countdown-num" id="countdownNum">3</div>
+      </div>
 
-        <div class="race-grid">
-          <div class="cockpit">
-            <div class="cockpit-head">
-              <div class="cockpit-tag">▶ Live Telemetry</div>
-              <div class="cockpit-status">XR Stream Stable</div>
-            </div>
+      <!-- Stage 2: Live race HUD -->
+      <section class="race-screen race-screen--live" id="raceLiveScreen">
+        <div class="race-bg race-bg--live"></div>
+        <div class="race-overlay race-overlay--live"></div>
 
-            <div class="speedo">
-              <div class="speedo-inner">
-                <div class="speedo-val" id="speedVal">000</div>
-                <div class="speedo-unit">KM / H</div>
-              </div>
-            </div>
-
-            <div class="gauges">
-              <div class="gauge">
-                <div class="gauge-label">Gear</div>
-                <div class="gauge-val" id="gearVal">N</div>
-              </div>
-              <div class="gauge">
-                <div class="gauge-label">RPM</div>
-                <div class="gauge-val" id="rpmVal">0<span>×1000</span></div>
-              </div>
-              <div class="gauge">
-                <div class="gauge-label">DRS</div>
-                <div class="gauge-val" id="drsVal">OFF</div>
-              </div>
-              <div class="gauge">
-                <div class="gauge-label">Fuel</div>
-                <div class="gauge-val" id="fuelVal">100<span>%</span></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="race-side">
-            <div class="race-card">
-              <h3>Current Lap</h3>
-              <div class="big" id="lapTime">00:00.000</div>
-            </div>
-
-            <div class="race-card">
-              <h3>Lap History</h3>
-              <div class="lap-row">
-                <span class="num">L 01</span><b>01:15.482</b>
-              </div>
-              <div class="lap-row">
-                <span class="num">L 02</span><b>01:13.901</b>
-              </div>
-              <div class="lap-row">
-                <span class="num">L 03</span>
-                <b style="color:var(--red)">01:12.674 ⚡</b>
-              </div>
-              <div class="lap-row">
-                <span class="num">L 04</span><b>01:14.220</b>
-              </div>
-            </div>
-
-            <div class="race-card">
-              <h3>Space Sync</h3>
-              <div class="big">5.2<small>× 4.1 m room mapped</small></div>
-              <div
-                style="margin-top:10px;font-size:12px;color:var(--muted);line-height:1.5;"
-              >
-                Move within highlighted floor zones. Helmet will warn at 30 cm
-                from physical walls.
-              </div>
-            </div>
-
-            <div class="race-actions">
-              <button class="cta" id="startBtn">
-                Start Engine <span class="chev">»</span>
-              </button>
-              <a href="circuit.html" class="cta ghost sm">Back</a>
-            </div>
+        <!-- Top-left: lap timer card -->
+        <div class="hud-lap-timer">
+          <div class="lap-time" id="lapTime">00:00.000</div>
+          <div class="lap-label">Current Lap</div>
+          <div class="best-lap">
+            <span class="best-label">Best Lap</span>
+            <span class="best-val" id="bestLap">—</span>
           </div>
         </div>
 
-        <div class="foot">
-          <span class="live">Race session armed · waiting for ignition</span>
-          <span>HEX/04 — Race</span>
+        <!-- Top-right: mini-map / live cam -->
+        <div class="hud-minimap">
+          <div class="minimap-img"></div>
         </div>
-      </main>
-    </div>
+
+        <!-- Position indicator -->
+        <div class="hud-position">
+          <div class="pos-label">Position</div>
+          <div class="pos-val"><span id="positionCurrent">6</span> / 12</div>
+          <svg class="pos-arc" viewBox="0 0 60 60">
+            <circle cx="30" cy="30" r="26" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="3"/>
+            <circle id="posArc" cx="30" cy="30" r="26" fill="none" stroke="#fff" stroke-width="3"
+                    stroke-dasharray="163.36" stroke-dashoffset="81.7" stroke-linecap="round"
+                    transform="rotate(-90 30 30)"/>
+          </svg>
+        </div>
+
+        <!-- Right-bottom: speedo + gear -->
+        <div class="hud-speedo">
+          <svg class="speedo-arc" viewBox="0 0 140 140">
+            <circle cx="70" cy="70" r="62" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="6"/>
+            <circle id="speedoArc" cx="70" cy="70" r="62" fill="none" stroke="#e63b2e" stroke-width="6"
+                    stroke-dasharray="389.56" stroke-dashoffset="389.56" stroke-linecap="round"
+                    transform="rotate(135 70 70)"/>
+          </svg>
+          <div class="speedo-inner">
+            <div class="speedo-small" id="speedVal">07</div>
+            <div class="gear-val" id="gearVal">2</div>
+          </div>
+        </div>
+
+        <a class="race-back race-back--live" href="circuit.html" aria-label="Exit Race">Exit</a>
+      </section>
+    </main>
 
     <script src="js/main.js"></script>
   </body>

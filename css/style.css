@@ -994,211 +994,426 @@ button {
 }
 
 /* ====== Race page ====== */
-.race-grid {
-  margin-top: 40px;
-  display: grid;
-  grid-template-columns: 1.5fr 1fr;
-  gap: 50px;
-  flex: 1;
-}
-
-.cockpit {
-  background: #0a0a0a;
-  color: #fff;
-  border-radius: var(--radius-lg);
-  padding: 36px;
-  position: relative;
+.race-body {
+  margin: 0;
+  background: #000;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  min-height: 540px;
 }
 
-.cockpit::before {
-  content: "";
+.race-stage {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  font-family: var(--font-sans);
+  color: #fff;
+  user-select: none;
+}
+
+.race-screen {
   position: absolute;
   inset: 0;
-  background: radial-gradient(
-      ellipse at top right,
-      rgba(230, 59, 46, 0.2) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      ellipse at bottom left,
-      rgba(230, 59, 46, 0.08) 0%,
-      transparent 50%
-    );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.7s ease;
+}
+
+.race-screen.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.race-bg {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.race-bg--start { background-image: url("../assets/race-1.jpg"); }
+.race-bg--live  { background-image: url("../assets/race-2.jpg"); }
+
+.race-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
   pointer-events: none;
 }
 
-.cockpit-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-  z-index: 1;
+.race-overlay--live {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.18) 0%,
+    rgba(0, 0, 0, 0) 30%,
+    rgba(0, 0, 0, 0) 70%,
+    rgba(0, 0, 0, 0.2) 100%
+  );
 }
 
-.cockpit-tag {
-  font-size: 11px;
-  letter-spacing: 0.22em;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--red);
+/* Start screen content — text and button are baked into race-1.jpg.
+   We hide our HTML title/sub completely and position only the interactive
+   button as an invisible overlay at the exact same spot as the JPG's
+   button (center 50% / 65.74%, size 18.06% × 9.38%). Hover effects act
+   on this transparent layer so the JPG button reacts visually. */
+.race-start-content {
+  position: absolute;
+  inset: 0;
 }
 
-.cockpit-status {
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  color: rgba(255, 255, 255, 0.6);
-  text-transform: uppercase;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.race-start-title,
+.race-start-sub {
+  display: none;
 }
 
-.cockpit-status::before {
-  content: "";
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #4ade80;
-  box-shadow: 0 0 8px #4ade80;
-  display: inline-block;
+.race-start-btn {
+  position: absolute;
+  left: 50%;
+  top: 65.74%;
+  transform: translate(-50%, -50%);
+  width: 18.06%;
+  height: 9.38%;
+  min-width: 180px;
+  min-height: 52px;
+  background: transparent;
+  color: transparent;
+  border: none;
+  border-radius: 999px;
+  font-size: 0;
+  cursor: pointer;
+  padding: 0;
+  outline: none;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
-.speedo {
-  flex: 1;
-  display: flex;
+.race-start-btn:hover {
+  transform: translate(-50%, -50%) scale(1.04);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.35),
+    0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.race-start-btn:active {
+  transform: translate(-50%, -50%) scale(0.98);
+}
+
+.race-back {
+  position: absolute;
+  top: 28px;
+  left: 36px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 8px 16px;
+  border-radius: 999px;
+  backdrop-filter: blur(8px);
+  transition: background 0.2s ease;
+  z-index: 20;
+}
+
+.race-back:hover { background: rgba(0, 0, 0, 0.6); }
+
+.race-back--live { top: auto; bottom: 28px; left: 28px; }
+
+/* Countdown overlay */
+.countdown-overlay {
+  position: absolute;
+  inset: 0;
+  display: none;
   align-items: center;
   justify-content: center;
-  position: relative;
-  z-index: 1;
+  z-index: 30;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.55);
 }
 
-.speedo-inner {
-  text-align: center;
-}
+.countdown-overlay.active { display: flex; }
 
-.speedo-val {
-  font-size: 160px;
-  font-weight: 900;
-  letter-spacing: -0.06em;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-}
-
-.speedo-unit {
-  font-size: 14px;
-  letter-spacing: 0.3em;
-  color: rgba(255, 255, 255, 0.5);
-  font-weight: 700;
-  margin-top: 6px;
-}
-
-.gauges {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
-  position: relative;
-  z-index: 1;
-  padding-top: 24px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.gauge .gauge-label {
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  color: rgba(255, 255, 255, 0.4);
-  text-transform: uppercase;
-  font-weight: 700;
-}
-
-.gauge .gauge-val {
-  font-size: 26px;
+.countdown-num {
+  font-family: var(--font-sans);
+  font-size: 220px;
   font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.06em;
+  text-shadow: 0 0 60px rgba(230, 59, 46, 0.7);
+  animation: countdownPop 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.countdown-num.go {
+  color: var(--red);
+  font-size: 180px;
   letter-spacing: -0.02em;
-  margin-top: 6px;
+  animation: countdownGo 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes countdownPop {
+  0%   { transform: scale(0.35); opacity: 0; }
+  20%  { transform: scale(1.15); opacity: 1; }
+  70%  { transform: scale(1); opacity: 1; }
+  100% { transform: scale(0.85); opacity: 0; }
+}
+
+@keyframes countdownGo {
+  0%   { transform: scale(0.4); opacity: 0; }
+  20%  { transform: scale(1.4); opacity: 1; }
+  60%  { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* ====== Live race HUD ======
+   Positions match the JPG's baked HUD so the HTML elements cover the
+   underlying image (so we don't see duplicates). JPG is 5760×3240 →
+   percentages computed from that source. */
+
+/* Lap timer — exactly overlays the JPG's lap card (source y 280-750,
+   x 33-877 → 0.6%-15.2% × 8.6%-23.1%). Fully opaque background to
+   completely cover the baked image card underneath. */
+.hud-lap-timer {
+  position: absolute;
+  top: 8.6%;
+  left: 3.6%;
+  width: 14.6%;
+  min-width: 200px;
+  background: #ffffff;
+  border-radius: 6px;
+  padding: 12px 18px 14px;
+  color: #1a1a1a;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.lap-time {
+  font-size: 30px;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+  line-height: 1;
 }
 
-.gauge .gauge-val span {
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.4);
+.lap-label {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-top: 5px;
   font-weight: 600;
-  margin-left: 4px;
 }
 
-.race-side {
+.best-lap {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+}
+
+.best-label { color: var(--red); font-weight: 600; }
+.best-val   { font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* Minimap (replay cam) — covers the JPG's baked mini-map exactly.
+   JPG mini-map ends at the right edge (rightPct≈0.6%), so we right-align too. */
+.hud-minimap {
+  position: absolute;
+  top: 2.6%;
+  right: 0.6%;
+  width: 40.3%;
+  aspect-ratio: 1760 / 580;
+  border-radius: 0;
+  overflow: hidden;
+  border: none;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+}
+
+.minimap-img {
+  width: 100%;
+  height: 100%;
+  background-image: url("../assets/race-2.jpg");
+  /* Mini-map source x 3403-5724 (40.3% wide), y 85-1100 (31% tall).
+     Scale = 100/40.3 ≈ 248% so the mini-map crop fills the container. */
+  background-size: 248% auto;
+  background-position: 100% 5%;
+}
+
+/* Leaderboard — covers the JPG's baked leaderboard exactly */
+.hud-leaderboard {
+  position: absolute;
+  top: 26%;
+  left: 3.8%;
+  background: rgba(0, 0, 0, 0.85);
+  border-radius: 4px;
+  padding: 8px 10px 10px;
+  width: 18%;
+  min-width: 180px;
+  backdrop-filter: blur(6px);
+}
+
+.lb-brand {
+  display: inline-block;
+  background: var(--red);
+  color: #fff;
+  font-weight: 900;
+  font-size: 13px;
+  padding: 4px 10px;
+  border-radius: 3px;
+  letter-spacing: 0.04em;
+  margin-bottom: 10px;
+}
+
+.lb-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 4px;
 }
 
-.race-card {
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  padding: 22px 24px;
-}
-
-.race-card h3 {
+.lb-row {
+  display: grid;
+  grid-template-columns: 22px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 10px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.04);
   font-size: 12px;
-  letter-spacing: 0.2em;
-  color: var(--muted);
-  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.lb-pos {
   font-weight: 700;
-  margin: 0 0 14px;
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
 }
 
-.race-card .big {
-  font-size: 36px;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1;
-}
+.lb-name { font-weight: 500; }
+.lb-gap  { font-variant-numeric: tabular-nums; color: rgba(255, 255, 255, 0.65); font-size: 11px; }
 
-.race-card .big small {
-  font-size: 14px;
-  color: var(--muted);
-  font-weight: 500;
-  letter-spacing: 0;
-  margin-left: 6px;
-}
-
-.lap-row {
-  display: flex;
-  justify-content: space-between;
-  font-size: 13px;
-  padding: 6px 0;
-  border-bottom: 1px solid var(--line);
-}
-
-.lap-row:last-child {
-  border-bottom: none;
-}
-
-.lap-row b {
-  font-weight: 700;
-  letter-spacing: -0.01em;
-}
-
-.lap-row .num {
-  color: var(--muted);
-  font-size: 11px;
-  letter-spacing: 0.16em;
+.lb-row--me {
+  background: var(--red);
+  color: #fff;
   font-weight: 600;
 }
 
-.race-actions {
+.lb-row--me .lb-pos,
+.lb-row--me .lb-gap { color: rgba(255, 255, 255, 0.92); }
+
+/* Position arc — center of left-mid area */
+.hud-position {
+  position: absolute;
+  top: 55%;
+  left: 29%;
+  transform: translate(-50%, -50%);
+  width: 110px;
+  height: 110px;
   display: flex;
-  gap: 12px;
-  margin-top: 4px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
 }
 
-.race-actions .cta {
-  flex: 1;
+.hud-position::before {
+  content: "";
+  position: absolute;
+  inset: -8px -16px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0.65) 0%,
+    rgba(0, 0, 0, 0) 75%
+  );
+  z-index: -1;
+}
+
+.pos-label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+
+.pos-val {
+  font-size: 18px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.pos-arc {
+  width: 70px;
+  height: 70px;
+  margin-top: 6px;
+}
+
+/* Speedo + gear — covers JPG's baked circular gauge */
+.hud-speedo {
+  position: absolute;
+  right: 4.5%;
+  bottom: 13%;
+  width: 14%;
+  aspect-ratio: 1;
+  max-width: 180px;
+  min-width: 120px;
+}
+
+.hud-speedo::before {
+  content: "";
+  position: absolute;
+  inset: -14px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at center,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0.5) 60%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  z-index: -1;
+}
+
+.speedo-arc {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hud-speedo .speedo-inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  color: #fff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+}
+
+.speedo-small {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  opacity: 0.85;
+}
+
+.hud-speedo .gear-val {
+  font-size: 56px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin-top: -4px;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 900px) {
+  .race-start-title { font-size: 36px; }
+  .race-start-sub { font-size: 16px; }
+  .hud-minimap { width: 200px; }
+  .hud-leaderboard { min-width: 160px; }
+  .hud-speedo { width: 110px; height: 110px; }
+  .hud-speedo .gear-val { font-size: 44px; }
 }
 
 /* ====== Footer mini ====== */

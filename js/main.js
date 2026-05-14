@@ -389,77 +389,128 @@
     });
   }
 
-  /* -------- Race page: telemetry simulation -------- */
+  /* -------- Race page: countdown + live telemetry -------- */
+  var raceStartScreen = document.getElementById("raceStartScreen");
+  var raceLiveScreen = document.getElementById("raceLiveScreen");
+  var raceStartBtn = document.getElementById("raceStartBtn");
+  var countdownOverlay = document.getElementById("countdownOverlay");
+  var countdownNum = document.getElementById("countdownNum");
+  var lapEl = document.getElementById("lapTime");
+  var bestLapEl = document.getElementById("bestLap");
   var speedEl = document.getElementById("speedVal");
   var gearEl = document.getElementById("gearVal");
-  var rpmEl = document.getElementById("rpmVal");
-  var drsEl = document.getElementById("drsVal");
-  var fuelEl = document.getElementById("fuelVal");
-  var lapEl = document.getElementById("lapTime");
-  var startBtn = document.getElementById("startBtn");
+  var positionCurrentEl = document.getElementById("positionCurrent");
+  var posArc = document.getElementById("posArc");
+  var speedoArc = document.getElementById("speedoArc");
 
-  if (speedEl && startBtn) {
-    var running = false;
+  function padNum(n, w) {
+    n = String(n);
+    while (n.length < w) n = "0" + n;
+    return n;
+  }
+
+  function fmtLap(ms) {
+    var total = Math.max(0, Math.floor(ms));
+    var min = Math.floor(total / 60000);
+    var sec = Math.floor((total % 60000) / 1000);
+    var mil = total % 1000;
+    return padNum(min, 2) + ":" + padNum(sec, 2) + "." + padNum(mil, 3);
+  }
+
+  function startCountdown(then) {
+    if (!countdownOverlay || !countdownNum) {
+      then();
+      return;
+    }
+    var seq = [
+      { text: "3", cls: "" },
+      { text: "2", cls: "" },
+      { text: "1", cls: "" },
+      { text: "GO", cls: "go" }
+    ];
+    countdownOverlay.classList.add("active");
+    var i = 0;
+    function step() {
+      var item = seq[i];
+      // Reset animation by re-adding the class
+      countdownNum.classList.remove("go");
+      void countdownNum.offsetWidth;
+      countdownNum.textContent = item.text;
+      if (item.cls) countdownNum.classList.add(item.cls);
+      i++;
+      if (i < seq.length) {
+        setTimeout(step, item.text === "GO" ? 700 : 900);
+      } else {
+        setTimeout(function () {
+          countdownOverlay.classList.remove("active");
+          then();
+        }, 600);
+      }
+    }
+    step();
+  }
+
+  function startLiveRace() {
+    if (raceStartScreen) raceStartScreen.classList.remove("active");
+    if (raceLiveScreen) raceLiveScreen.classList.add("active");
+    runTelemetry();
+  }
+
+  function runTelemetry() {
+    if (!lapEl || !speedEl || !gearEl) return;
     var t0 = 0;
-    var anim = 0;
-    var speed = 0;
-    var fuel = 100;
-
-    function pad(n, w) {
-      n = String(n);
-      while (n.length < w) n = "0" + n;
-      return n;
-    }
-
-    function fmt(ms) {
-      var total = Math.max(0, Math.floor(ms));
-      var min = Math.floor(total / 60000);
-      var sec = Math.floor((total % 60000) / 1000);
-      var mil = total % 1000;
-      return pad(min, 2) + ":" + pad(sec, 2) + "." + pad(mil, 3);
-    }
+    var speed = 5;
+    var bestLap = null;
+    var currentLapStart = 0;
 
     function frame(ts) {
-      if (!running) return;
-      if (!t0) t0 = ts;
-      var elapsed = ts - t0;
-      lapEl.textContent = fmt(elapsed);
+      if (!t0) {
+        t0 = ts;
+        currentLapStart = ts;
+      }
+      var elapsed = ts - currentLapStart;
+      if (lapEl) lapEl.textContent = fmtLap(elapsed);
 
-      // Speed bobs between 180-340 like a lap with throttle/brake cycles
+      // Speed cycles between 100-330 km/h with throttle/brake feel
       var phase = (elapsed % 11000) / 11000;
       var target =
-        180 +
-        Math.sin(phase * Math.PI * 2) * 60 +
-        Math.sin(phase * Math.PI * 6) * 30 +
+        160 +
+        Math.sin(phase * Math.PI * 2) * 70 +
+        Math.sin(phase * Math.PI * 6) * 35 +
         60;
       speed += (target - speed) * 0.08;
-      speedEl.textContent = pad(Math.round(speed), 3);
+      var displaySpeed = Math.round(speed);
+      if (speedEl) speedEl.textContent = padNum(Math.floor(displaySpeed / 10), 2);
 
       var g = Math.min(8, Math.max(1, Math.round(speed / 45)));
-      gearEl.textContent = g;
-      var rpm = Math.round((4 + (speed / 340) * 9) * 10) / 10;
-      rpmEl.innerHTML = rpm.toFixed(1) + '<span>×1000</span>';
-      drsEl.textContent = speed > 280 ? "OPEN" : "OFF";
-      drsEl.style.color = speed > 280 ? "#4ade80" : "#fff";
+      if (gearEl) gearEl.textContent = g;
 
-      fuel = Math.max(0, fuel - 0.005);
-      fuelEl.innerHTML = fuel.toFixed(1) + '<span>%</span>';
-
-      anim = requestAnimationFrame(frame);
-    }
-
-    startBtn.addEventListener("click", function () {
-      running = !running;
-      if (running) {
-        startBtn.innerHTML = 'Engine Running <span class="chev">●</span>';
-        startBtn.style.background = "#e63b2e";
-        t0 = 0;
-        anim = requestAnimationFrame(frame);
-      } else {
-        cancelAnimationFrame(anim);
-        startBtn.innerHTML = 'Start Engine <span class="chev">»</span>';
-        startBtn.style.background = "";
+      // Update speedo arc (full arc = 270° of circle, circumference 389.56)
+      if (speedoArc) {
+        var t = Math.min(1, speed / 340);
+        // Fill from 0 → t of the 270° arc → dashoffset goes 389.56 → 389.56*(1-0.75*t)
+        var offset = 389.56 * (1 - 0.75 * t);
+        speedoArc.setAttribute("stroke-dashoffset", String(offset));
       }
+
+      // Simulated lap completion every ~75s (mock)
+      if (elapsed > 75000) {
+        var lapMs = elapsed;
+        if (bestLap === null || lapMs < bestLap) {
+          bestLap = lapMs;
+          if (bestLapEl) bestLapEl.textContent = fmtLap(bestLap);
+        }
+        currentLapStart = ts;
+      }
+
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  if (raceStartBtn) {
+    raceStartBtn.addEventListener("click", function () {
+      startCountdown(startLiveRace);
     });
   }
 
