@@ -26,210 +26,113 @@
         </div>
       </header>
 
-      <main class="page">
-        <h1 class="headline left">Build your <span class="soft">machine</span>.</h1>
-        <div class="sub-headline" style="text-align:left; margin-top:10px;">
-          Step 02 — Vehicle Configuration
-        </div>
-
+      <main class="page customize-page">
         <div class="customize-grid">
-          <div class="car-stage">
-            <div class="stage-meta">
-              Spec Series
-              <strong id="modelName">HEX-F1 R7 Prototype</strong>
-            </div>
-
-            <!-- F1 car SVG illustration -->
-            <svg id="carSvg" viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0" stop-color="#ffffff" stop-opacity="0.35" />
-                  <stop offset="1" stop-color="#000000" stop-opacity="0.15" />
-                </linearGradient>
-                <linearGradient id="shadowGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0" stop-color="#000" stop-opacity="0.25" />
-                  <stop offset="1" stop-color="#000" stop-opacity="0" />
-                </linearGradient>
-              </defs>
-
-              <!-- Ground shadow -->
-              <ellipse cx="400" cy="245" rx="320" ry="14" fill="url(#shadowGrad)" />
-
-              <!-- Rear wing -->
-              <rect id="rearWing" x="640" y="92" width="58" height="10" rx="2" fill="var(--car-color, #e63b2e)" />
-              <rect x="650" y="102" width="38" height="42" fill="#1a1a1a" />
-              <rect x="645" y="142" width="48" height="6" fill="#1a1a1a" />
-
-              <!-- Main body -->
-              <path
-                id="carBody"
-                d="M 90 170 Q 110 130 180 125 L 320 120 Q 340 95 410 95 L 540 100 Q 600 105 640 140 L 700 150 Q 720 158 720 175 L 720 195 L 90 195 Z"
-                fill="var(--car-color, #e63b2e)"
-              />
-              <path
-                d="M 90 170 Q 110 130 180 125 L 320 120 Q 340 95 410 95 L 540 100 Q 600 105 640 140 L 700 150 Q 720 158 720 175 L 720 195 L 90 195 Z"
-                fill="url(#bodyGrad)"
-              />
-
-              <!-- Cockpit / halo -->
-              <path
-                d="M 360 90 Q 410 50 470 70 Q 490 80 490 110 L 360 110 Z"
-                fill="#1a1a1a"
-              />
-              <ellipse cx="425" cy="92" rx="32" ry="14" fill="#0a0a0a" />
-              <path
-                d="M 395 110 Q 425 60 460 110"
-                stroke="#2a2a2a"
-                stroke-width="3"
-                fill="none"
-              />
-
-              <!-- Sidepod air intakes -->
-              <path d="M 380 130 L 470 130 L 460 155 L 390 155 Z" fill="#1a1a1a" />
-
-              <!-- Front nose detail -->
-              <rect x="84" y="166" width="12" height="20" fill="#1a1a1a" />
-
-              <!-- Front wing -->
-              <rect id="frontWing" x="40" y="180" width="80" height="6" rx="2" fill="var(--car-color, #e63b2e)" />
-              <rect x="48" y="186" width="68" height="14" fill="#1a1a1a" />
-              <rect x="40" y="200" width="80" height="4" rx="1" fill="var(--car-color, #e63b2e)" />
-
-              <!-- Tires -->
-              <g id="tireFront">
-                <circle cx="200" cy="205" r="38" fill="#0a0a0a" />
-                <circle cx="200" cy="205" r="22" fill="#1f1f1f" />
-                <circle cx="200" cy="205" r="8" fill="#3a3a3a" />
-              </g>
-              <g id="tireRear">
-                <circle cx="610" cy="205" r="42" fill="#0a0a0a" />
-                <circle cx="610" cy="205" r="24" fill="#1f1f1f" />
-                <circle cx="610" cy="205" r="9" fill="#3a3a3a" />
-              </g>
-
-              <!-- Livery accent line -->
-              <path
-                d="M 110 175 L 640 165"
-                stroke="#fff"
-                stroke-width="2"
-                fill="none"
-                opacity="0.5"
-              />
-
-              <!-- Number plate -->
-              <text
-                x="330"
-                y="172"
-                fill="#fff"
-                font-family="-apple-system, sans-serif"
-                font-weight="900"
-                font-size="32"
-                font-style="italic"
-              >
-                07
-              </text>
-              <text
-                x="540"
-                y="168"
-                fill="#fff"
-                font-family="-apple-system, sans-serif"
-                font-weight="800"
-                font-size="13"
-                letter-spacing="2"
-              >
-                HEX
-              </text>
-            </svg>
-
-            <div class="stage-rotate" aria-hidden="true">
-              <button title="Rotate left">‹</button>
-              <button title="Reset">○</button>
-              <button title="Rotate right">›</button>
-            </div>
-          </div>
-
-          <div class="panel">
-            <h2 class="panel-title">Customize your F1 machine</h2>
-
-            <div class="panel-section">
-              <div class="panel-label">Livery Color</div>
-              <div class="swatch-row" id="colorRow">
-                <button class="swatch active" data-color="#e63b2e" style="background:#e63b2e"></button>
-                <button class="swatch" data-color="#1a1a1a" style="background:#1a1a1a"></button>
-                <button class="swatch" data-color="#0033a0" style="background:#0033a0"></button>
-                <button class="swatch" data-color="#00a651" style="background:#00a651"></button>
-                <button class="swatch" data-color="#ffcc00" style="background:#ffcc00"></button>
-                <button class="swatch" data-color="#7d2ae8" style="background:#7d2ae8"></button>
-                <button class="swatch" data-color="#f5f5f5" style="background:#f5f5f5; box-shadow:0 0 0 1.5px #ddd"></button>
-              </div>
-            </div>
-
-            <div class="panel-section">
-              <div class="panel-label">Power Unit</div>
-              <div class="option-row" data-group="engine">
-                <button class="opt active" data-engine="balanced">
-                  Balanced<span>V6 · 850hp</span>
+          <!-- LEFT: Paint + Driving style -->
+          <aside class="panel-card panel-left">
+            <section class="panel-section">
+              <h3 class="panel-title">Paint</h3>
+              <div class="swatch-grid" id="paintGrid">
+                <button class="swatch-cell" data-color="#ffffff" aria-label="White">
+                  <span class="swatch-dot swatch-dot--white"></span>
+                  <span class="swatch-label">White</span>
                 </button>
-                <button class="opt" data-engine="speed">
-                  Top Speed<span>V6 · 920hp</span>
+                <button class="swatch-cell active" data-color="#1a1a1a" aria-label="Black">
+                  <span class="swatch-dot" style="background:#1a1a1a;"></span>
+                  <span class="swatch-label">Black</span>
                 </button>
-                <button class="opt" data-engine="agile">
-                  Agile<span>V6 · 780hp</span>
+                <button class="swatch-cell" data-color="#9a9a9a" aria-label="Gray">
+                  <span class="swatch-dot" style="background:#9a9a9a;"></span>
+                  <span class="swatch-label">Gray</span>
+                </button>
+                <button class="swatch-cell" data-color="#e63b2e" aria-label="Red">
+                  <span class="swatch-dot" style="background:#e63b2e;"></span>
+                  <span class="swatch-label">Red</span>
+                </button>
+                <button class="swatch-cell" data-color="#ffd02f" aria-label="Yellow">
+                  <span class="swatch-dot" style="background:#ffd02f;"></span>
+                  <span class="swatch-label">Yellow</span>
+                </button>
+                <button class="swatch-cell" data-color="#3cba54" aria-label="Green">
+                  <span class="swatch-dot" style="background:#3cba54;"></span>
+                  <span class="swatch-label">Green</span>
+                </button>
+                <button class="swatch-cell" data-color="#3b82f6" aria-label="Blue">
+                  <span class="swatch-dot" style="background:#3b82f6;"></span>
+                  <span class="swatch-label">Blue</span>
+                </button>
+                <button class="swatch-cell" data-color="#8a5cf6" aria-label="Purple">
+                  <span class="swatch-dot" style="background:#8a5cf6;"></span>
+                  <span class="swatch-label">Purple</span>
+                </button>
+                <button class="swatch-cell" data-color="#ff9ec7" aria-label="Pink">
+                  <span class="swatch-dot" style="background:#ff9ec7;"></span>
+                  <span class="swatch-label">Pink</span>
                 </button>
               </div>
-            </div>
+            </section>
 
-            <div class="panel-section">
-              <div class="panel-label">Tire Compound</div>
-              <div class="option-row" data-group="tire">
-                <button class="opt active" data-tire="soft">
-                  Soft<span>Red · Grip</span>
-                </button>
-                <button class="opt" data-tire="medium">
-                  Medium<span>Yellow · Balance</span>
-                </button>
-                <button class="opt" data-tire="hard">
-                  Hard<span>White · Endurance</span>
-                </button>
+            <section class="panel-section">
+              <h3 class="panel-title">Driving style</h3>
+              <div class="style-stack" id="styleStack">
+                <button class="style-pill" data-style="easy">Easy</button>
+                <button class="style-pill active" data-style="normal">Normal</button>
+                <button class="style-pill" data-style="hard">Hard</button>
               </div>
-            </div>
+            </section>
+          </aside>
 
-            <div class="panel-section">
-              <div class="panel-label">Performance Stats</div>
-              <div class="stat-row">
-                <div class="stat">
-                  <div class="stat-name">Top Speed</div>
-                  <div class="stat-val" id="statSpeed">348<span style="font-size:13px;color:var(--muted)"> km/h</span></div>
-                  <div class="stat-bar"><i style="width:78%" id="barSpeed"></i></div>
-                </div>
-                <div class="stat">
-                  <div class="stat-name">Cornering</div>
-                  <div class="stat-val" id="statCorner">82<span style="font-size:13px;color:var(--muted)"> pt</span></div>
-                  <div class="stat-bar"><i style="width:82%" id="barCorner"></i></div>
-                </div>
-                <div class="stat">
-                  <div class="stat-name">Stability</div>
-                  <div class="stat-val" id="statStab">74<span style="font-size:13px;color:var(--muted)"> pt</span></div>
-                  <div class="stat-bar"><i style="width:74%" id="barStab"></i></div>
-                </div>
-              </div>
+          <!-- CENTER: car stage + Done -->
+          <section class="car-center">
+            <div class="car-stage" id="carStage">
+              <div class="car-image" id="carImage" aria-label="F1 car preview"></div>
+              <div class="car-tint" id="carTint" aria-hidden="true"></div>
             </div>
+            <a href="circuit.html" class="cta done-btn" id="doneBtn">Done</a>
+          </section>
 
-            <div class="panel-foot">
-              <a href="circuit.html" class="cta">
-                Continue <span class="chev">»</span>
-              </a>
+          <!-- RIGHT: Wheel -->
+          <aside class="panel-card panel-right">
+            <h3 class="panel-title">Wheel</h3>
+            <div class="wheel-stack" id="wheelStack">
+              <button class="wheel-card active" data-wheel="0" aria-label="Wheel red sidewall">
+                <span class="wheel-img" data-wheel-img="0"></span>
+              </button>
+              <button class="wheel-card" data-wheel="1" aria-label="Wheel yellow sidewall">
+                <span class="wheel-img" data-wheel-img="1"></span>
+              </button>
+              <button class="wheel-card" data-wheel="2" aria-label="Wheel white sidewall">
+                <span class="wheel-img" data-wheel-img="2"></span>
+              </button>
+              <button class="wheel-card" data-wheel="3" aria-label="Wheel green sidewall">
+                <span class="wheel-img" data-wheel-img="3"></span>
+              </button>
             </div>
-          </div>
+          </aside>
         </div>
 
         <div class="foot">
-          <span class="live">Build saved to garage · HEX cloud</span>
+          <span class="live">Hand tracking ready · MediaPipe</span>
           <span>HEX/02 — Vehicle</span>
         </div>
       </main>
     </div>
 
+    <!-- Hand tracking overlay (cursor + dwell ring) -->
+    <div class="hand-overlay" id="handOverlay" aria-hidden="true">
+      <div class="hand-cursor" id="handCursor">
+        <svg viewBox="0 0 48 48" width="48" height="48">
+          <circle class="dwell-ring" cx="24" cy="24" r="20" fill="none" stroke="rgba(230,59,46,0.25)" stroke-width="3"/>
+          <circle class="dwell-progress" id="dwellProgress" cx="24" cy="24" r="20" fill="none" stroke="#e63b2e" stroke-width="3" stroke-dasharray="125.6" stroke-dashoffset="125.6" transform="rotate(-90 24 24)"/>
+          <circle cx="24" cy="24" r="5" fill="#e63b2e"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Hidden webcam input for MediaPipe -->
+    <video id="webcam" class="webcam-hidden" autoplay playsinline muted></video>
+
     <script src="js/main.js"></script>
+    <script type="module" src="js/hand-tracking.js"></script>
   </body>
 </html>

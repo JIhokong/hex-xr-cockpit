@@ -12,113 +12,126 @@
     });
   }
 
-  /* -------- Customize: color swatches & spec options -------- */
-  var carBody = document.getElementById("carBody");
-  var rearWing = document.getElementById("rearWing");
-  var frontWing = document.getElementById("frontWing");
-  var frontWingBottom = document.querySelectorAll("#carSvg rect[fill='var(--car-color, #e63b2e)']");
+  /* -------- Customize: Paint / Driving style / Wheel -------- */
+  var paintGrid = document.getElementById("paintGrid");
+  var carTint = document.getElementById("carTint");
 
-  function applyCarColor(color) {
-    var svg = document.getElementById("carSvg");
-    if (!svg) return;
-    svg.style.setProperty("--car-color", color);
-    // Force re-paint for older Safari handling of CSS vars on SVG attrs
-    var painted = svg.querySelectorAll("[fill='var(--car-color, #e63b2e)']");
-    painted.forEach(function (el) {
-      el.setAttribute("fill", color);
-      el.setAttribute("data-themed", "1");
-    });
-    document.querySelectorAll("[data-themed='1']").forEach(function (el) {
-      el.setAttribute("fill", color);
-    });
+  function hexToRgba(hex, alpha) {
+    var h = hex.replace("#", "");
+    var r = parseInt(h.substring(0, 2), 16);
+    var g = parseInt(h.substring(2, 4), 16);
+    var b = parseInt(h.substring(4, 6), 16);
+    return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
   }
 
-  var colorRow = document.getElementById("colorRow");
-  if (colorRow) {
-    colorRow.addEventListener("click", function (e) {
-      var btn = e.target.closest(".swatch");
+  function hexToHsl(hex) {
+    var h = hex.replace("#", "");
+    var r = parseInt(h.substring(0, 2), 16) / 255;
+    var g = parseInt(h.substring(2, 4), 16) / 255;
+    var b = parseInt(h.substring(4, 6), 16) / 255;
+    var max = Math.max(r, g, b), min = Math.min(r, g, b);
+    var l = (max + min) / 2, s;
+    if (max === min) {
+      s = 0;
+    } else {
+      var d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    }
+    return { s: s * 100, l: l * 100 };
+  }
+
+  /* Generate a body-only alpha mask from car.png: opaque only on the
+     mid-tone pixels (silver body), transparent on bright pixels (white
+     bg) and dark pixels (tires). Set as the mask-image for #carTint. */
+  function setupBodyMask() {
+    if (!carTint) return;
+    var img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = function () {
+      var c = document.createElement("canvas");
+      c.width = img.naturalWidth;
+      c.height = img.naturalHeight;
+      var ctx = c.getContext("2d");
+      ctx.drawImage(img, 0, 0);
+      var d = ctx.getImageData(0, 0, c.width, c.height);
+      var data = d.data;
+      for (var i = 0; i < data.length; i += 4) {
+        var lum = (data[i] + data[i + 1] + data[i + 2]) / 3;
+        var alpha;
+        if (lum > 240 || lum < 45) {
+          alpha = 0; // hide bright bg + dark tires
+        } else {
+          var distFromEdge = Math.min(lum - 45, 240 - lum);
+          alpha = Math.min(255, distFromEdge * 6);
+        }
+        data[i] = 255;
+        data[i + 1] = 255;
+        data[i + 2] = 255;
+        data[i + 3] = alpha;
+      }
+      ctx.putImageData(d, 0, 0);
+      var url = c.toDataURL("image/png");
+      carTint.style.maskImage = "url(" + url + ")";
+      carTint.style.webkitMaskImage = "url(" + url + ")";
+      carTint.style.maskMode = "alpha";
+      carTint.style.webkitMaskMode = "alpha";
+      carTint.style.maskSize = "contain";
+      carTint.style.webkitMaskSize = "contain";
+      carTint.style.maskPosition = "center";
+      carTint.style.webkitMaskPosition = "center";
+      carTint.style.maskRepeat = "no-repeat";
+      carTint.style.webkitMaskRepeat = "no-repeat";
+    };
+    img.src = "assets/car.png";
+  }
+  if (carTint) setupBodyMask();
+
+  function applyCarColor(color) {
+    if (!carTint) return;
+    var hsl = hexToHsl(color);
+    var isGrayscale = hsl.s < 5;
+    if (isGrayscale) {
+      // For white/black/gray, color blend mode does nothing (S=0).
+      // Use normal alpha overlay so the body actually changes luminance.
+      carTint.style.mixBlendMode = "normal";
+      carTint.style.backgroundColor = hexToRgba(color, 0.85);
+    } else {
+      // Chromatic — preserve underlying shading via color blend.
+      carTint.style.mixBlendMode = "color";
+      carTint.style.backgroundColor = hexToRgba(color, 0.85);
+    }
+  }
+
+  if (paintGrid) {
+    paintGrid.addEventListener("click", function (e) {
+      var btn = e.target.closest(".swatch-cell");
       if (!btn) return;
-      colorRow
-        .querySelectorAll(".swatch")
+      paintGrid.querySelectorAll(".swatch-cell")
         .forEach(function (s) { s.classList.remove("active"); });
       btn.classList.add("active");
       applyCarColor(btn.dataset.color);
     });
   }
 
-  /* Stats table -------------------------------------------- */
-  var SPEC = {
-    engine: {
-      balanced: { speed: 348, corner: 82, stab: 74, label: "V6 Balanced" },
-      speed:    { speed: 372, corner: 70, stab: 68, label: "V6 Top Speed" },
-      agile:    { speed: 322, corner: 92, stab: 80, label: "V6 Agile" }
-    },
-    tire: {
-      soft:   { corner: 6, stab: -4 },
-      medium: { corner: 0, stab: 0 },
-      hard:   { corner: -5, stab: 8 }
-    }
-  };
-
-  var state = { engine: "balanced", tire: "soft" };
-
-  function recalc() {
-    var e = SPEC.engine[state.engine];
-    var t = SPEC.tire[state.tire];
-    var corner = Math.max(40, Math.min(99, e.corner + t.corner));
-    var stab = Math.max(40, Math.min(99, e.stab + t.stab));
-    var speed = e.speed;
-
-    var sEl = document.getElementById("statSpeed");
-    var cEl = document.getElementById("statCorner");
-    var stEl = document.getElementById("statStab");
-    var bs = document.getElementById("barSpeed");
-    var bc = document.getElementById("barCorner");
-    var bt = document.getElementById("barStab");
-    if (!sEl) return;
-
-    sEl.innerHTML = speed + '<span style="font-size:13px;color:var(--muted)"> km/h</span>';
-    cEl.innerHTML = corner + '<span style="font-size:13px;color:var(--muted)"> pt</span>';
-    stEl.innerHTML = stab + '<span style="font-size:13px;color:var(--muted)"> pt</span>';
-    bs.style.width = Math.round((speed / 400) * 100) + "%";
-    bc.style.width = corner + "%";
-    bt.style.width = stab + "%";
+  var styleStack = document.getElementById("styleStack");
+  if (styleStack) {
+    styleStack.addEventListener("click", function (e) {
+      var btn = e.target.closest(".style-pill");
+      if (!btn) return;
+      styleStack.querySelectorAll(".style-pill")
+        .forEach(function (s) { s.classList.remove("active"); });
+      btn.classList.add("active");
+    });
   }
 
-  document.querySelectorAll("[data-group='engine'] .opt").forEach(function (b) {
-    b.addEventListener("click", function () {
-      document
-        .querySelectorAll("[data-group='engine'] .opt")
-        .forEach(function (x) { x.classList.remove("active"); });
-      b.classList.add("active");
-      state.engine = b.dataset.engine;
-      recalc();
-    });
-  });
-  document.querySelectorAll("[data-group='tire'] .opt").forEach(function (b) {
-    b.addEventListener("click", function () {
-      document
-        .querySelectorAll("[data-group='tire'] .opt")
-        .forEach(function (x) { x.classList.remove("active"); });
-      b.classList.add("active");
-      state.tire = b.dataset.tire;
-      recalc();
-    });
-  });
-
-  /* Stage rotate (visual nudge) */
-  var rotate = 0;
-  var carSvg = document.getElementById("carSvg");
-  var rotateBtns = document.querySelectorAll(".stage-rotate button");
-  if (carSvg && rotateBtns.length) {
-    rotateBtns[0].addEventListener("click", function () {
-      rotate -= 12; carSvg.style.transform = "perspective(1000px) rotateY(" + rotate + "deg)";
-    });
-    rotateBtns[1].addEventListener("click", function () {
-      rotate = 0; carSvg.style.transform = "perspective(1000px) rotateY(0deg)";
-    });
-    rotateBtns[2].addEventListener("click", function () {
-      rotate += 12; carSvg.style.transform = "perspective(1000px) rotateY(" + rotate + "deg)";
+  var wheelStack = document.getElementById("wheelStack");
+  if (wheelStack) {
+    wheelStack.addEventListener("click", function (e) {
+      var btn = e.target.closest(".wheel-card");
+      if (!btn) return;
+      wheelStack.querySelectorAll(".wheel-card")
+        .forEach(function (w) { w.classList.remove("active"); });
+      btn.classList.add("active");
     });
   }
 
