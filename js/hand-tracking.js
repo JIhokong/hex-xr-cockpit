@@ -1,5 +1,5 @@
 // HEX — MediaPipe Hand Tracking + Hover-dwell gesture
-// Loaded only on the Customize page (HTML wires <script type="module">).
+// Loaded on Customize and Circuit pages (HTML wires <script type="module">).
 // Uses @mediapipe/tasks-vision via jsDelivr CDN.
 
 import {
@@ -8,7 +8,11 @@ import {
 } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs";
 
 const DWELL_MS = 1000;
-const SELECTABLE = ".swatch-cell, .wheel-card, .style-pill, .cta";
+const IS_CIRCUIT = !!document.getElementById("trackGrid");
+const IS_CUSTOMIZE = !!document.querySelector(".car-stage");
+const SELECTABLE = IS_CIRCUIT
+  ? ".track, .cta"
+  : ".swatch-cell, .wheel-card, .style-pill, .cta";
 
 const cursor = document.getElementById("handCursor");
 const overlay = document.getElementById("handOverlay");
@@ -16,7 +20,7 @@ const progress = document.getElementById("dwellProgress");
 const video = document.getElementById("webcam");
 
 if (!cursor || !overlay || !video) {
-  console.warn("[hand] customize DOM not found — skipping init");
+  console.warn("[hand] overlay DOM not found — skipping init");
 } else {
   init().catch((err) => {
     console.warn("[hand] init failed; falling back to mouse only:", err);
@@ -112,7 +116,7 @@ async function init() {
 
         // Find what's under the cursor
         const el = document.elementFromPoint(smooth.x, smooth.y);
-        const carStageEl = el ? el.closest(".car-stage") : null;
+        const carStageEl = IS_CUSTOMIZE && el ? el.closest(".car-stage") : null;
         const target = el ? el.closest(SELECTABLE) : null;
 
         if (carStageEl && !el?.closest(".rotate-badge")) {
@@ -175,6 +179,12 @@ async function init() {
       { duration: 220, easing: "ease-out" }
     );
 
+    // Convert CTA needs click() so the scan overlay handler fires
+    // (direct href navigation would skip the simulation).
+    if (el.id === "convertCta") {
+      el.click();
+      return;
+    }
     // For anchor tags, navigate; otherwise dispatch click so existing
     // delegated handlers in main.js fire.
     if (el.tagName === "A" && el.href) {

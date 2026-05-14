@@ -187,7 +187,7 @@
               </small>
             </div>
           </div>
-          <a href="race.html" class="cta">
+          <a href="race.html" class="cta" id="convertCta">
             Convert Space <span class="chev">»</span>
           </a>
         </div>
@@ -196,9 +196,39 @@
           <span class="live">LiDAR active · 12.4k anchor points</span>
           <span>HEX/03 — Circuit</span>
         </div>
+
+        <!-- Spatial scan overlay (Convert Space → Race transition) -->
+        <div class="scan-overlay" id="scanOverlay" aria-hidden="true">
+          <div class="scan-card" role="status" aria-live="polite">
+            <div class="scan-title"><span class="dot"></span>Spatial scan in progress</div>
+            <div class="scan-stage-text">Mapping room geometry</div>
+            <div class="scan-substep">Scanning walls · 0%–34%</div>
+            <div class="scan-bar"><div class="scan-bar-fill"></div></div>
+            <div class="scan-stages">
+              <div class="pip active"></div>
+              <div class="pip"></div>
+              <div class="pip"></div>
+            </div>
+          </div>
+        </div>
       </main>
     </div>
 
+    <!-- Hand tracking overlay (cursor + dwell ring) -->
+    <div class="hand-overlay" id="handOverlay" aria-hidden="true">
+      <div class="hand-cursor" id="handCursor">
+        <svg viewBox="0 0 48 48" width="48" height="48">
+          <circle class="dwell-ring" cx="24" cy="24" r="20" fill="none" stroke="rgba(230,59,46,0.25)" stroke-width="3"/>
+          <circle class="dwell-progress" id="dwellProgress" cx="24" cy="24" r="20" fill="none" stroke="#e63b2e" stroke-width="3" stroke-dasharray="125.6" stroke-dashoffset="125.6" transform="rotate(-90 24 24)"/>
+          <circle cx="24" cy="24" r="5" fill="#e63b2e"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Hidden webcam input for MediaPipe -->
+    <video id="webcam" class="webcam-hidden" autoplay playsinline muted></video>
+
     <script src="js/main.js"></script>
+    <script type="module" src="js/hand-tracking.js"></script>
   </body>
 </html>

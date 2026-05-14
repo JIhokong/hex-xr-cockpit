@@ -360,8 +360,33 @@
   window.HEX.dragSensitivity = DRAG_SENS;
 
   /* -------- Circuit page: track selection -------- */
+  function readTrackMeta(card) {
+    var stats = card.querySelectorAll(".track-stat b");
+    return {
+      id: card.dataset.track || "monaco",
+      name: (card.querySelector(".track-name") || {}).textContent || "",
+      country: (card.querySelector(".track-country") || {}).textContent || "",
+      length: stats[0] ? stats[0].textContent : "",
+      turns: stats[1] ? stats[1].textContent : "",
+      difficulty: stats[2] ? stats[2].textContent : ""
+    };
+  }
+  function saveSelectedTrack(card) {
+    try {
+      sessionStorage.setItem(
+        "hex.selectedTrack",
+        JSON.stringify(readTrackMeta(card))
+      );
+    } catch (_) {
+      // private mode → silent
+    }
+  }
+
   var trackGrid = document.getElementById("trackGrid");
   if (trackGrid) {
+    var defaultActive = trackGrid.querySelector(".track.active");
+    if (defaultActive) saveSelectedTrack(defaultActive);
+
     trackGrid.addEventListener("click", function (e) {
       var card = e.target.closest(".track");
       if (!card) return;
@@ -386,6 +411,56 @@
         b2.textContent = "Selected";
         card.appendChild(b2);
       }
+      saveSelectedTrack(card);
+    });
+  }
+
+  /* -------- Circuit page: scan simulation overlay -------- */
+  var convertCta = document.getElementById("convertCta");
+  var scanOverlay = document.getElementById("scanOverlay");
+  if (convertCta && scanOverlay) {
+    var scanStages = [
+      { text: "Mapping room geometry", sub: "Scanning walls · 0%–34%" },
+      { text: "Analyzing layout",      sub: "Matching to track topology · 34%–72%" },
+      { text: "Building circuit",      sub: "Generating racing line · 72%–100%" }
+    ];
+    var scanBar = scanOverlay.querySelector(".scan-bar-fill");
+    var scanTxt = scanOverlay.querySelector(".scan-stage-text");
+    var scanSub = scanOverlay.querySelector(".scan-substep");
+    var scanPips = scanOverlay.querySelectorAll(".scan-stages .pip");
+    var scanRunning = false;
+
+    function runScanStage(i) {
+      if (i >= scanStages.length) {
+        setTimeout(function () {
+          window.location.href = "race.html";
+        }, 320);
+        return;
+      }
+      scanTxt.classList.add("swap");
+      setTimeout(function () {
+        scanTxt.textContent = scanStages[i].text;
+        scanSub.textContent = scanStages[i].sub;
+        scanTxt.classList.remove("swap");
+        scanPips.forEach(function (p, k) {
+          p.classList.toggle("active", k === i);
+          p.classList.toggle("done", k < i);
+        });
+        scanBar.style.width =
+          Math.round(((i + 1) / scanStages.length) * 100) + "%";
+        setTimeout(function () { runScanStage(i + 1); }, 800);
+      }, 180);
+    }
+
+    convertCta.addEventListener("click", function (e) {
+      e.preventDefault();
+      if (scanRunning) return;
+      scanRunning = true;
+      var active = document.querySelector(".track.active");
+      if (active) saveSelectedTrack(active);
+      scanOverlay.classList.add("active");
+      scanBar.style.width = "0%";
+      runScanStage(0);
     });
   }
 
@@ -399,8 +474,6 @@
   var bestLapEl = document.getElementById("bestLap");
   var speedEl = document.getElementById("speedVal");
   var gearEl = document.getElementById("gearVal");
-  var positionCurrentEl = document.getElementById("positionCurrent");
-  var posArc = document.getElementById("posArc");
   var speedoArc = document.getElementById("speedoArc");
 
   function padNum(n, w) {
@@ -457,7 +530,7 @@
   }
 
   function runTelemetry() {
-    if (!lapEl || !speedEl || !gearEl) return;
+    if (!lapEl) return;
     var t0 = 0;
     var speed = 5;
     var bestLap = null;

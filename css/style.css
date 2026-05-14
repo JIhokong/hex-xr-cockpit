@@ -30,11 +30,11 @@
   --red: #e63b2e;
   --red-soft: #ff4a3d;
   --pill: #1a1a1a;
-  --shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.18);
+  --shadow: 0 1.875rem 3.75rem -1.25rem rgba(0, 0, 0, 0.18);
 
-  --radius-pill: 999px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
+  --radius-pill: 62.4375rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1.25rem;
 
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, "Apple SD Gothic Neo", "Noto Sans KR",
@@ -43,6 +43,15 @@
 
 * {
   box-sizing: border-box;
+}
+
+/* Viewport-relative root font-size.
+   Design baseline = 1280×800 (16:10), where 1rem = 16px.
+   We scale by the *smaller* of width/80 or height/50 so the design fits
+   both dimensions without overflow — at 1920×1080 we land near 1.35x, at
+   2560×1440 ~1.8x. Clamp keeps small viewports legible. */
+html {
+  font-size: clamp(10px, min(calc(100vw / 80), calc(100vh / 50)), 32px);
 }
 
 html,
@@ -56,6 +65,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-feature-settings: "ss01", "ss02";
   letter-spacing: -0.01em;
+  min-height: 100vh;
 }
 
 a {
@@ -75,8 +85,8 @@ button {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding: 28px 56px 40px;
-  max-width: 1600px;
+  padding: 1.75rem 3.5rem 2.5rem;
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -85,24 +95,24 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 18px;
+  padding-bottom: 1.125rem;
   border-bottom: 1px solid var(--line);
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 1.125rem;
 }
 
 .brand-mark {
   display: block;
-  height: 30px;
+  height: 1.875rem;
   width: auto;
 }
 
 .brand-sub {
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.18em;
   color: var(--ink-2);
   font-weight: 600;
@@ -112,13 +122,13 @@ button {
 .nav-right {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 2rem;
 }
 
 .nav-links {
   display: flex;
-  gap: 28px;
-  font-size: 12px;
+  gap: 1.75rem;
+  font-size: 0.75rem;
   letter-spacing: 0.16em;
   font-weight: 600;
   text-transform: uppercase;
@@ -140,8 +150,8 @@ button {
 }
 
 .menu-btn {
-  width: 34px;
-  height: 22px;
+  width: 2.125rem;
+  height: 1.375rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -163,14 +173,14 @@ button {
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding-top: 36px;
+  padding-top: 2.25rem;
   position: relative;
 }
 
 /* ====== Headline ====== */
 .headline {
   text-align: center;
-  font-size: 52px;
+  font-size: 3.25rem;
   font-weight: 800;
   letter-spacing: -0.03em;
   margin: 6px 0 0;
@@ -195,7 +205,7 @@ button {
 }
 
 .sub-headline {
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--muted);
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -206,21 +216,21 @@ button {
 
 /* ====== Welcome page (index) ====== */
 .welcome-grid {
-  margin-top: 60px;
+  margin-top: 3.75rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
-  gap: 60px;
+  gap: 3.75rem;
   flex: 1;
   position: relative;
-  transform: translateY(-20px);
+  transform: translateY(-1.25rem);
 }
 
 .devices {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  gap: 30px;
+  gap: 1.875rem;
   position: relative;
 }
 
@@ -234,14 +244,14 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 288px;
-  height: 288px;
-  margin: 0 auto 22px;
+  width: 18rem;
+  height: 18rem;
+  margin: 0 auto 1.375rem;
 }
 
 .device-card:nth-child(2) .device-stage {
-  width: 256px;
-  height: 256px;
+  width: 16rem;
+  height: 16rem;
 }
 
 .device-glow {
@@ -254,7 +264,7 @@ button {
     rgba(160, 160, 160, 0.25) 45%,
     rgba(160, 160, 160, 0) 72%
   );
-  filter: blur(28px);
+  filter: blur(1.75rem);
   z-index: 0;
   pointer-events: none;
   transition: background 0.5s ease, filter 0.5s ease,
@@ -293,8 +303,8 @@ button {
     rgba(230, 59, 46, 0.25) 45%,
     rgba(230, 59, 46, 0) 72%
   );
-  filter: blur(34px);
-  box-shadow: 0 0 60px 12px rgba(230, 59, 46, 0.35);
+  filter: blur(2.125rem);
+  box-shadow: 0 0 3.75rem 0.75rem rgba(230, 59, 46, 0.35);
   transform: scale(1.06);
 }
 
@@ -305,23 +315,23 @@ button {
 /* Crop the helmet portion of the reference image.
    Reference is 5760x3240; helmet bbox ~ x:272-1396, y:1077-2200. */
 .device-img.helmet {
-  width: 288px;
-  height: 288px;
-  background-size: 1290px auto;
-  background-position: -43px -220px;
+  width: 18rem;
+  height: 18rem;
+  background-size: 80.625rem auto;
+  background-position: -2.6875rem -13.75rem;
 }
 
 /* Crop the handle portion.
    Handle bbox ~ x:1615-2646, y:1257-2114. */
 .device-img.handle {
-  width: 256px;
-  height: 256px;
-  background-size: 1382px auto;
-  background-position: -384px -277px;
+  width: 16rem;
+  height: 16rem;
+  background-size: 86.375rem auto;
+  background-position: -24rem -17.3125rem;
 }
 
 .device-caption {
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--muted);
   line-height: 1.5;
   font-weight: 400;
@@ -329,26 +339,26 @@ button {
 
 .welcome-right {
   position: relative;
-  padding-left: 160px;
+  padding-left: 10rem;
   z-index: 2;
-  transform: translateY(-23px);
+  transform: translateY(-1.4375rem);
 }
 
 .welcome-right h2 {
   font-family: "Pragati Narrow", var(--font-sans);
-  font-size: 34px;
+  font-size: 2.125rem;
   font-weight: 700;
   letter-spacing: -0.01em;
-  margin: 0 0 16px;
+  margin: 0 0 1rem;
   line-height: 1.15;
   white-space: nowrap;
 }
 
 .welcome-right p {
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--muted);
   line-height: 1.65;
-  max-width: 380px;
+  max-width: 23.75rem;
   margin: 0;
 }
 
@@ -374,22 +384,22 @@ button {
 .cta {
   display: inline-flex;
   align-items: center;
-  gap: 14px;
+  gap: 0.875rem;
   background: var(--pill);
   color: #fff;
-  padding: 20px 36px;
+  padding: 1.25rem 2.25rem;
   border-radius: var(--radius-pill);
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: 700;
   letter-spacing: -0.01em;
   transition: transform 0.22s cubic-bezier(0.2, 0.7, 0.2, 1),
     box-shadow 0.22s ease, background 0.22s ease;
-  box-shadow: 0 14px 30px -10px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0.875rem 1.875rem -10px rgba(0, 0, 0, 0.4);
 }
 
 .cta:hover {
   transform: translateY(-2px) scale(1.04);
-  box-shadow: 0 22px 44px -12px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1.375rem 2.75rem -0.75rem rgba(0, 0, 0, 0.5);
   background: #000;
 }
 
@@ -401,7 +411,7 @@ button {
   display: inline-block;
   color: var(--red);
   font-weight: 900;
-  font-size: 22px;
+  font-size: 1.375rem;
   letter-spacing: -0.1em;
   transition: transform 0.22s ease, color 0.22s ease;
 }
@@ -416,8 +426,8 @@ button {
   color: var(--ink);
   box-shadow: none;
   border: 1.5px solid var(--ink);
-  padding: 18px 32px;
-  font-size: 15px;
+  padding: 1.125rem 2rem;
+  font-size: 0.9375rem;
 }
 
 .cta.ghost:hover {
@@ -426,8 +436,8 @@ button {
 }
 
 .cta.sm {
-  padding: 14px 24px;
-  font-size: 14px;
+  padding: 0.875rem 1.5rem;
+  font-size: 0.875rem;
 }
 
 .bottom-right {
@@ -438,14 +448,14 @@ button {
 
 /* ====== Customize page ====== */
 .customize-page {
-  padding-top: 24px;
+  padding-top: 1.5rem;
 }
 
 .customize-grid {
-  margin-top: 12px;
+  margin-top: 0.75rem;
   display: grid;
-  grid-template-columns: 260px 1fr 200px;
-  gap: 40px;
+  grid-template-columns: 16.25rem 1fr 12.5rem;
+  gap: 2.5rem;
   flex: 1;
   align-items: stretch;
 }
@@ -453,18 +463,18 @@ button {
 /* Side panel cards */
 .panel-card {
   background: #f4f4f4;
-  border-radius: 28px;
-  padding: 26px 22px 30px;
+  border-radius: 1.75rem;
+  padding: 1.625rem 1.375rem 1.875rem;
   display: flex;
   flex-direction: column;
-  gap: 26px;
+  gap: 1.625rem;
 }
 
 .panel-card .panel-title {
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: 700;
   letter-spacing: -0.01em;
-  margin: 0 0 16px;
+  margin: 0 0 1rem;
   text-align: center;
   color: var(--ink);
 }
@@ -476,21 +486,21 @@ button {
 /* Offset between Paint and Driving-style sections — adjusted to sit
    closer together (-10px net from the .panel-card flex gap). */
 .panel-left .panel-section + .panel-section {
-  margin-top: 40px;
+  margin-top: 2.5rem;
 }
 
 /* Shift only the "Driving style" title upward without moving the pills. */
 .panel-left .panel-section + .panel-section .panel-title {
-  transform: translateY(-25px);
+  transform: translateY(-1.5625rem);
 }
 
 /* Paint — 3x3 swatch grid */
 .swatch-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 18px 12px;
+  gap: 1.125rem 0.75rem;
   justify-items: center;
-  margin-top: 60px;
+  margin-top: 3.75rem;
 }
 
 .swatch-cell {
@@ -507,8 +517,8 @@ button {
 .swatch-cell:hover { transform: translateY(-2px); }
 
 .swatch-dot {
-  width: 42px;
-  height: 42px;
+  width: 2.625rem;
+  height: 2.625rem;
   border-radius: 50%;
   display: block;
   position: relative;
@@ -529,7 +539,7 @@ button {
 }
 
 .swatch-label {
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: var(--ink-2);
   letter-spacing: 0;
   font-weight: 500;
@@ -544,9 +554,9 @@ button {
 
 .style-pill {
   background: #e3e3e3;
-  border-radius: 999px;
-  padding: 12px 16px;
-  font-size: 13px;
+  border-radius: 62.4375rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   color: var(--ink-2);
   text-align: center;
@@ -568,15 +578,15 @@ button {
   align-items: center;
   justify-content: center;
   position: relative;
-  gap: 28px;
+  gap: 1.75rem;
 }
 
 .car-stage {
   position: relative;
   width: 100%;
-  max-width: 720px;
+  max-width: 45rem;
   aspect-ratio: 720 / 360;
-  perspective: 1600px;
+  perspective: 100rem;
   perspective-origin: 50% 60%;
   cursor: grab;
   user-select: none;
@@ -649,7 +659,7 @@ button {
   left: 50%;
   bottom: 19%;
   width: 92%;
-  height: 36px;
+  height: 2.25rem;
   transform: translateX(-50%);
   border-radius: 50%;
   border: 1px solid #d8d8d8;
@@ -663,31 +673,31 @@ button {
   left: 50%;
   bottom: 9%;
   transform: translateX(-50%);
-  width: 52px;
-  height: 52px;
+  width: 3.25rem;
+  height: 3.25rem;
   border-radius: 50%;
   background: #c4c4c4;
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0;
   z-index: 5;
 }
 
 .done-btn {
-  padding: 18px 56px;
-  font-size: 22px;
+  padding: 1.125rem 3.5rem;
+  font-size: 1.375rem;
   font-weight: 700;
-  margin-top: 30px;
+  margin-top: 1.875rem;
 }
 
 .done-btn .chev { display: none; }
 
 /* Right: Wheel stack */
-.panel-right .panel-title { margin-bottom: 12px; }
+.panel-right .panel-title { margin-bottom: 0.75rem; }
 
 .wheel-stack {
   display: flex;
@@ -697,7 +707,7 @@ button {
 
 .wheel-card {
   background: transparent;
-  border-radius: 14px;
+  border-radius: 0.875rem;
   padding: 6px 4px;
   cursor: pointer;
   display: flex;
@@ -720,14 +730,14 @@ button {
   /* Source 5760x3240; wheels centered at x≈5020.
      Detected tire centers y ≈ 1295, 1770, 2246, 2723.
      Scale = 1280/5760 = 0.2222 → scaled center x≈1114, y≈[288, 393, 499, 605]. */
-  background-size: 1280px auto;
+  background-size: 80rem auto;
   mix-blend-mode: multiply;
 }
 
-.wheel-img[data-wheel-img="0"] { background-position: -1050px -239px; }
-.wheel-img[data-wheel-img="1"] { background-position: -1050px -344px; }
-.wheel-img[data-wheel-img="2"] { background-position: -1050px -450px; }
-.wheel-img[data-wheel-img="3"] { background-position: -1050px -556px; }
+.wheel-img[data-wheel-img="0"] { background-position: -65.625rem -14.9375rem; }
+.wheel-img[data-wheel-img="1"] { background-position: -65.625rem -21.5rem; }
+.wheel-img[data-wheel-img="2"] { background-position: -65.625rem -28.125rem; }
+.wheel-img[data-wheel-img="3"] { background-position: -65.625rem -34.75rem; }
 
 /* Wheel overlays painted on top of the car's tires. Rotates with the car. */
 .car-wheels-layer {
@@ -778,8 +788,8 @@ button {
 
 /* Drop-zone glow when a wheel is being dragged onto the car */
 .wheel-slot.drop-active {
-  filter: drop-shadow(0 0 14px rgba(230, 59, 46, 0.85))
-    drop-shadow(0 0 24px rgba(230, 59, 46, 0.4));
+  filter: drop-shadow(0 0 0.875rem rgba(230, 59, 46, 0.85))
+    drop-shadow(0 0 1.5rem rgba(230, 59, 46, 0.4));
 }
 
 /* Source wheel card during drag — scaled up and dimmed */
@@ -797,14 +807,14 @@ button {
   position: fixed;
   pointer-events: none;
   z-index: 9000;
-  width: 90px;
-  height: 90px;
+  width: 5.625rem;
+  height: 5.625rem;
   object-fit: contain;
   background: transparent;
   border: none;
   opacity: 0;
   transform: translate(-50%, -50%) scale(1.05);
-  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.3));
+  filter: drop-shadow(0 8px 1.125rem rgba(0, 0, 0, 0.3));
   transition: left 0.6s cubic-bezier(0.32, 0.08, 0.24, 1),
     top 0.6s cubic-bezier(0.32, 0.08, 0.24, 1),
     opacity 0.25s ease, transform 0.3s ease;
@@ -848,10 +858,10 @@ button {
 
 .hand-cursor {
   position: absolute;
-  width: 48px;
-  height: 48px;
+  width: 3rem;
+  height: 3rem;
   transform: translate(-50%, -50%);
-  filter: drop-shadow(0 4px 14px rgba(230, 59, 46, 0.45));
+  filter: drop-shadow(0 4px 0.875rem rgba(230, 59, 46, 0.45));
   transition: left 0.04s linear, top 0.04s linear;
 }
 
@@ -860,11 +870,11 @@ button {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-top: 30px;
+  margin-top: 1.875rem;
 }
 
 .circuit-head .meta {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--muted);
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -872,16 +882,16 @@ button {
 }
 
 .circuit-grid {
-  margin-top: 36px;
+  margin-top: 2.25rem;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 22px;
+  gap: 1.375rem;
 }
 
 .track {
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
-  padding: 24px;
+  padding: 1.5rem;
   background: #fff;
   cursor: pointer;
   position: relative;
@@ -891,29 +901,29 @@ button {
 .track:hover {
   border-color: var(--ink);
   transform: translateY(-4px);
-  box-shadow: 0 24px 50px -20px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 1.5rem 3.125rem -1.25rem rgba(0, 0, 0, 0.18);
 }
 
 .track.active {
   border-color: var(--red);
-  box-shadow: 0 24px 50px -20px rgba(230, 59, 46, 0.25);
+  box-shadow: 0 1.5rem 3.125rem -1.25rem rgba(230, 59, 46, 0.25);
 }
 
 .track svg {
   width: 100%;
-  height: 130px;
+  height: 8.125rem;
   display: block;
 }
 
 .track-name {
-  font-size: 19px;
+  font-size: 1.1875rem;
   font-weight: 800;
   letter-spacing: -0.02em;
-  margin: 14px 0 4px;
+  margin: 0.875rem 0 4px;
 }
 
 .track-country {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--muted);
   letter-spacing: 0.06em;
   font-weight: 500;
@@ -921,21 +931,21 @@ button {
 
 .track-stats {
   display: flex;
-  gap: 16px;
-  margin-top: 60px;
-  padding-top: 14px;
+  gap: 1rem;
+  margin-top: 3.75rem;
+  padding-top: 0.875rem;
   border-top: 1px solid var(--line);
 }
 
 .track-stat {
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: var(--muted);
   letter-spacing: 0.06em;
 }
 
 .track-stat b {
   display: block;
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--ink);
   font-weight: 800;
   margin-top: 2px;
@@ -944,8 +954,8 @@ button {
 
 .track-badge {
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: 1rem;
+  right: 1rem;
   font-size: 10px;
   letter-spacing: 0.16em;
   font-weight: 800;
@@ -954,14 +964,14 @@ button {
 }
 
 .scan-notice {
-  margin-top: 32px;
+  margin-top: 2rem;
   border: 1px dashed var(--line-2);
   border-radius: var(--radius-lg);
-  padding: 20px 24px;
+  padding: 1.25rem 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 1.5rem;
 }
 
 .scan-notice .dot {
@@ -980,7 +990,7 @@ button {
 }
 
 .scan-notice .copy {
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: var(--ink-2);
   font-weight: 500;
 }
@@ -990,7 +1000,7 @@ button {
   color: var(--muted);
   font-weight: 400;
   margin-top: 4px;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 /* ====== Race page ====== */
@@ -1031,7 +1041,7 @@ button {
 }
 
 .race-bg--start { background-image: url("../assets/race-1.jpg"); }
-.race-bg--live  { background-image: url("../assets/race-2.jpg"); }
+.race-bg--live  { background-image: url("../assets/race-3.jpg"); }
 
 .race-overlay {
   position: absolute;
@@ -1072,12 +1082,12 @@ button {
   transform: translate(-50%, -50%);
   width: 18.06%;
   height: 9.38%;
-  min-width: 180px;
-  min-height: 52px;
+  min-width: 11.25rem;
+  min-height: 3.25rem;
   background: transparent;
   color: transparent;
   border: none;
-  border-radius: 999px;
+  border-radius: 62.4375rem;
   font-size: 0;
   cursor: pointer;
   padding: 0;
@@ -1088,7 +1098,7 @@ button {
 .race-start-btn:hover {
   transform: translate(-50%, -50%) scale(1.04);
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.35),
-    0 10px 30px rgba(0, 0, 0, 0.5);
+    0 10px 1.875rem rgba(0, 0, 0, 0.5);
 }
 
 .race-start-btn:active {
@@ -1097,16 +1107,16 @@ button {
 
 .race-back {
   position: absolute;
-  top: 28px;
-  left: 36px;
+  top: 1.75rem;
+  left: 2.25rem;
   color: rgba(255, 255, 255, 0.85);
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 500;
   letter-spacing: 0.04em;
   text-decoration: none;
   background: rgba(0, 0, 0, 0.35);
-  padding: 8px 16px;
-  border-radius: 999px;
+  padding: 8px 1rem;
+  border-radius: 62.4375rem;
   backdrop-filter: blur(8px);
   transition: background 0.2s ease;
   z-index: 20;
@@ -1114,7 +1124,7 @@ button {
 
 .race-back:hover { background: rgba(0, 0, 0, 0.6); }
 
-.race-back--live { top: auto; bottom: 28px; left: 28px; }
+.race-back--live { top: auto; bottom: 1.75rem; left: 1.75rem; }
 
 /* Countdown overlay */
 .countdown-overlay {
@@ -1132,17 +1142,17 @@ button {
 
 .countdown-num {
   font-family: var(--font-sans);
-  font-size: 220px;
+  font-size: 13.75rem;
   font-weight: 800;
   color: #fff;
   letter-spacing: -0.06em;
-  text-shadow: 0 0 60px rgba(230, 59, 46, 0.7);
+  text-shadow: 0 0 3.75rem rgba(230, 59, 46, 0.7);
   animation: countdownPop 1s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .countdown-num.go {
   color: var(--red);
-  font-size: 180px;
+  font-size: 11.25rem;
   letter-spacing: -0.02em;
   animation: countdownGo 0.9s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -1166,24 +1176,24 @@ button {
    underlying image (so we don't see duplicates). JPG is 5760×3240 →
    percentages computed from that source. */
 
-/* Lap timer — exactly overlays the JPG's lap card (source y 280-750,
-   x 33-877 → 0.6%-15.2% × 8.6%-23.1%). Fully opaque background to
+/* Lap timer — exactly overlays the JPG's lap card. Fully opaque to
    completely cover the baked image card underneath. */
 .hud-lap-timer {
   position: absolute;
   top: 8.6%;
   left: 3.6%;
   width: 14.6%;
-  min-width: 200px;
+  min-width: 12.5rem;
   background: #ffffff;
   border-radius: 6px;
-  padding: 12px 18px 14px;
+  padding: 0.75rem 1.125rem 0.875rem;
   color: #1a1a1a;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 10px 1.875rem rgba(0, 0, 0, 0.4);
+  z-index: 10;
 }
 
 .lap-time {
-  font-size: 30px;
+  font-size: 1.875rem;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.01em;
@@ -1191,7 +1201,7 @@ button {
 }
 
 .lap-label {
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: var(--muted);
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -1205,7 +1215,7 @@ button {
   margin-top: 10px;
   padding-top: 8px;
   border-top: 1px solid var(--line);
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 .best-label { color: var(--red); font-weight: 600; }
@@ -1222,7 +1232,7 @@ button {
   border-radius: 0;
   overflow: hidden;
   border: none;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0.75rem 2.25rem rgba(0, 0, 0, 0.4);
 }
 
 .minimap-img {
@@ -1235,17 +1245,14 @@ button {
   background-position: 100% 5%;
 }
 
-/* Leaderboard — covers the JPG's baked leaderboard exactly */
+/* Leaderboard — flows under the LAP card inside .hud-left-group.
+   Keeps glassmorphism (translucent dark + blur). */
 .hud-leaderboard {
-  position: absolute;
-  top: 26%;
-  left: 3.8%;
   background: rgba(0, 0, 0, 0.85);
   border-radius: 4px;
   padding: 8px 10px 10px;
-  width: 18%;
-  min-width: 180px;
   backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 .lb-brand {
@@ -1253,11 +1260,13 @@ button {
   background: var(--red);
   color: #fff;
   font-weight: 900;
-  font-size: 13px;
-  padding: 4px 10px;
+  font-style: italic;
+  font-size: 1.125rem;
+  padding: 0.125rem 0.625rem;
   border-radius: 3px;
-  letter-spacing: 0.04em;
+  letter-spacing: -0.04em;
   margin-bottom: 10px;
+  line-height: 1;
 }
 
 .lb-list {
@@ -1271,13 +1280,13 @@ button {
 
 .lb-row {
   display: grid;
-  grid-template-columns: 22px 1fr auto;
+  grid-template-columns: 1.375rem 1fr auto;
   align-items: center;
   gap: 10px;
   padding: 5px 10px;
   border-radius: 3px;
   background: rgba(255, 255, 255, 0.04);
-  font-size: 12px;
+  font-size: 0.75rem;
   color: rgba(255, 255, 255, 0.92);
 }
 
@@ -1289,7 +1298,7 @@ button {
 }
 
 .lb-name { font-weight: 500; }
-.lb-gap  { font-variant-numeric: tabular-nums; color: rgba(255, 255, 255, 0.65); font-size: 11px; }
+.lb-gap  { font-variant-numeric: tabular-nums; color: rgba(255, 255, 255, 0.65); font-size: 0.6875rem; }
 
 .lb-row--me {
   background: var(--red);
@@ -1306,8 +1315,8 @@ button {
   top: 55%;
   left: 29%;
   transform: translate(-50%, -50%);
-  width: 110px;
-  height: 110px;
+  width: 6.875rem;
+  height: 6.875rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1320,7 +1329,7 @@ button {
 .hud-position::before {
   content: "";
   position: absolute;
-  inset: -8px -16px;
+  inset: -8px -1rem;
   background: radial-gradient(
     ellipse at center,
     rgba(0, 0, 0, 0.65) 0%,
@@ -1330,21 +1339,21 @@ button {
 }
 
 .pos-label {
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: rgba(255, 255, 255, 0.85);
   letter-spacing: 0.06em;
   margin-bottom: 4px;
 }
 
 .pos-val {
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
 
 .pos-arc {
-  width: 70px;
-  height: 70px;
+  width: 4.375rem;
+  height: 4.375rem;
   margin-top: 6px;
 }
 
@@ -1355,14 +1364,14 @@ button {
   bottom: 13%;
   width: 14%;
   aspect-ratio: 1;
-  max-width: 180px;
-  min-width: 120px;
+  max-width: 11.25rem;
+  min-width: 7.5rem;
 }
 
 .hud-speedo::before {
   content: "";
   position: absolute;
-  inset: -14px;
+  inset: -0.875rem;
   border-radius: 50%;
   background: radial-gradient(
     circle at center,
@@ -1392,14 +1401,14 @@ button {
 }
 
 .speedo-small {
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   opacity: 0.85;
 }
 
 .hud-speedo .gear-val {
-  font-size: 56px;
+  font-size: 3.5rem;
   font-weight: 800;
   letter-spacing: -0.04em;
   line-height: 1;
@@ -1408,22 +1417,22 @@ button {
 }
 
 @media (max-width: 900px) {
-  .race-start-title { font-size: 36px; }
-  .race-start-sub { font-size: 16px; }
-  .hud-minimap { width: 200px; }
-  .hud-leaderboard { min-width: 160px; }
-  .hud-speedo { width: 110px; height: 110px; }
-  .hud-speedo .gear-val { font-size: 44px; }
+  .race-start-title { font-size: 2.25rem; }
+  .race-start-sub { font-size: 1rem; }
+  .hud-minimap { width: 12.5rem; }
+  .hud-leaderboard { min-width: 10rem; }
+  .hud-speedo { width: 6.875rem; height: 6.875rem; }
+  .hud-speedo .gear-val { font-size: 2.75rem; }
 }
 
 /* ====== Footer mini ====== */
 .foot {
-  margin-top: 30px;
-  padding-top: 18px;
+  margin-top: 1.875rem;
+  padding-top: 1.125rem;
   border-top: 1px solid var(--line);
   display: flex;
   justify-content: space-between;
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--muted);
@@ -1447,36 +1456,132 @@ button {
 
 /* ====== Responsive ====== */
 @media (max-width: 1200px) {
-  .shell { padding: 24px 32px 32px; }
-  .headline { font-size: 42px; }
-  .welcome-grid { gap: 30px; }
-  .device-card .device-stage { width: 240px; height: 240px; }
-  .device-card:nth-child(2) .device-stage { width: 224px; height: 224px; }
-  .device-img.helmet { width: 240px; height: 240px; background-size: 1075px auto; background-position: -36px -183px; }
-  .device-img.handle { width: 224px; height: 224px; background-size: 1210px auto; background-position: -336px -242px; }
+  .shell { padding: 1.5rem 2rem 2rem; }
+  .headline { font-size: 2.625rem; }
+  .welcome-grid { gap: 1.875rem; }
+  .device-card .device-stage { width: 15rem; height: 15rem; }
+  .device-card:nth-child(2) .device-stage { width: 14rem; height: 14rem; }
+  .device-img.helmet { width: 15rem; height: 15rem; background-size: 67.1875rem auto; background-position: -2.25rem -11.4375rem; }
+  .device-img.handle { width: 14rem; height: 14rem; background-size: 75.625rem auto; background-position: -21rem -15.125rem; }
 }
 
 @media (max-width: 900px) {
-  .shell { padding: 20px 20px 28px; }
+  .shell { padding: 1.25rem 1.25rem 1.75rem; }
   .nav-links { display: none; }
-  .headline { font-size: 32px; }
+  .headline { font-size: 2rem; }
   .welcome-grid,
   .customize-grid,
   .race-grid {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 2.5rem;
   }
   .circuit-grid { grid-template-columns: 1fr 1fr; }
   .welcome-right { padding-left: 0; text-align: center; }
   .welcome-right p { margin: 0 auto; }
-  .bottom-right { position: static; margin-top: 20px; align-self: flex-end; }
+  .bottom-right { position: static; margin-top: 1.25rem; align-self: flex-end; }
   .connector { display: none; }
   .devices { flex-wrap: wrap; }
 }
 
 @media (max-width: 600px) {
   .circuit-grid { grid-template-columns: 1fr; }
-  .speedo-val { font-size: 100px; }
+  .speedo-val { font-size: 6.25rem; }
   .gauges { grid-template-columns: repeat(2, 1fr); }
   .swatch-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* ====== Scan overlay (Circuit → Race transition) ====== */
+.scan-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(0.875rem);
+  -webkit-backdrop-filter: blur(0.875rem);
+  animation: scanFadeIn 0.32s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.scan-overlay.active { display: flex; }
+
+.scan-card {
+  width: min(35rem, 86vw);
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 2.25rem 2.5rem 2rem;
+  box-shadow: 0 2.5rem 5rem -1.5rem rgba(0, 0, 0, 0.25);
+  text-align: left;
+}
+
+.scan-title {
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 800;
+  color: var(--red);
+  margin-bottom: 0.875rem;
+}
+.scan-title .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--red);
+  display: inline-block;
+  margin-right: 10px;
+  vertical-align: middle;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+.scan-stage-text {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  min-height: 1.4em;
+  transition: opacity 0.22s ease;
+}
+.scan-stage-text.swap { opacity: 0; }
+
+.scan-substep {
+  font-size: 0.75rem;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  margin-top: 6px;
+  font-variant-numeric: tabular-nums;
+}
+
+.scan-bar {
+  margin-top: 1.375rem;
+  height: 6px;
+  border-radius: 62.4375rem;
+  background: rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+.scan-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--red), var(--red-soft));
+  transition: width 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.scan-stages {
+  display: flex;
+  gap: 6px;
+  margin-top: 1rem;
+}
+.scan-stages .pip {
+  flex: 1;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.08);
+  transition: background 0.3s ease;
+}
+.scan-stages .pip.done { background: var(--red); }
+.scan-stages .pip.active { background: var(--ink); }
+
+@keyframes scanFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
