@@ -18,6 +18,18 @@ const cursor = document.getElementById("handCursor");
 const overlay = document.getElementById("handOverlay");
 const progress = document.getElementById("dwellProgress");
 const video = document.getElementById("webcam");
+const handCanvas = document.getElementById("handCanvas");
+const handPip = document.getElementById("handPip");
+
+// MediaPipe HandLandmarker connection topology (21 landmarks).
+const HAND_CONNECTIONS = [
+  [0, 1], [1, 2], [2, 3], [3, 4],          // thumb
+  [0, 5], [5, 6], [6, 7], [7, 8],          // index
+  [5, 9], [9, 10], [10, 11], [11, 12],     // middle
+  [9, 13], [13, 14], [14, 15], [15, 16],   // ring
+  [13, 17], [17, 18], [18, 19], [19, 20],  // pinky
+  [0, 17],                                  // palm edge
+];
 
 if (!cursor || !overlay || !video) {
   console.warn("[hand] overlay DOM not found — skipping init");
@@ -40,10 +52,24 @@ async function init() {
     return;
   }
   video.srcObject = stream;
+  // Explicit play() in addition to the `autoplay` attribute — some
+  // browsers (esp. mobile Safari) need a direct call before frames start.
+  try { await video.play(); } catch (_) { /* autoplay will handle it */ }
   await new Promise((res) => {
     if (video.readyState >= 2) return res();
     video.onloadeddata = () => res();
   });
+
+  // Match canvas backing pixels to the video's intrinsic resolution so
+  // landmark coordinates (normalized 0..1) map 1:1 to canvas pixels.
+  const ctx = handCanvas ? handCanvas.getContext("2d") : null;
+  if (handCanvas) {
+    handCanvas.width = video.videoWidth || 640;
+    handCanvas.height = video.videoHeight || 480;
+  }
+
+  // Show the live PIP now that the stream is producing frames.
+  if (handPip) handPip.classList.add("active");
 
   // 2) Load MediaPipe HandLandmarker model
   const fileset = await FilesetResolver.forVisionTasks(
@@ -93,11 +119,51 @@ async function init() {
     setDwellProgress(0);
   }
 
+  function drawLandmarks(landmarks) {
+    if (!ctx || !handCanvas) return;
+    const w = handCanvas.width;
+    const h = handCanvas.height;
+    ctx.clearRect(0, 0, w, h);
+    if (!landmarks || !landmarks.length) return;
+    const lm = landmarks[0];
+    // Connection lines
+    ctx.strokeStyle = "rgba(230, 59, 46, 0.9)";
+    ctx.lineWidth = 3;
+    ctx.lineCap = "round";
+    for (let i = 0; i < HAND_CONNECTIONS.length; i++) {
+      const a = lm[HAND_CONNECTIONS[i][0]];
+      const b = lm[HAND_CONNECTIONS[i][1]];
+      ctx.beginPath();
+      ctx.moveTo(a.x * w, a.y * h);
+      ctx.lineTo(b.x * w, b.y * h);
+      ctx.stroke();
+    }
+    // Landmark dots
+    ctx.fillStyle = "#ffffff";
+    for (let i = 0; i < lm.length; i++) {
+      ctx.beginPath();
+      ctx.arc(lm[i].x * w, lm[i].y * h, 4, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    // Highlight the index fingertip (lm[8]) — that's our cursor anchor
+    ctx.fillStyle = "#e63b2e";
+    ctx.beginPath();
+    ctx.arc(lm[8].x * w, lm[8].y * h, 7, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = "rgba(255,255,255,0.95)";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+
   function tick() {
     const now = performance.now();
     if (video.readyState >= 2 && video.currentTime !== lastVideoTime) {
       lastVideoTime = video.currentTime;
       const result = handLandmarker.detectForVideo(video, now);
+
+      // Draw the live skeleton on the PIP canvas regardless of whether
+      // there's a target under the viewport cursor below.
+      drawLandmarks(result.landmarks);
 
       if (result.landmarks && result.landmarks.length > 0) {
         // landmark[8] = index fingertip; normalized [0..1] coords

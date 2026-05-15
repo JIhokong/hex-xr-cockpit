@@ -138,8 +138,14 @@
       </div>
     </div>
 
-    <!-- Hidden webcam input for MediaPipe -->
-    <video id="webcam" class="webcam-hidden" autoplay playsinline muted></video>
+    <!-- Hand-tracking PIP: live webcam + landmark canvas (visible) -->
+    <div class="hand-pip" id="handPip" aria-hidden="true">
+      <video id="webcam" autoplay playsinline muted></video>
+      <canvas id="handCanvas"></canvas>
+      <div class="hand-pip-label">
+        <span class="hand-pip-dot"></span>XR Hand Tracking
+      </div>
+    </div>
 
     <script src="js/main.js"></script>
     <script type="module" src="js/hand-tracking.js"></script>
