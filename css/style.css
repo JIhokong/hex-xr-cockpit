@@ -1121,7 +1121,8 @@ button {
   object-position: center;
 }
 
-.race-bg--start { background-image: url("../assets/race-1.jpg"); }
+.race-bg--start  { background-image: url("../assets/race-1.jpg"); }
+.race-bg--finish { background-image: url("../assets/last.jpg"); }
 /* .race-bg--live is a <video> element — no background-image needed. */
 
 .race-overlay {
@@ -1183,6 +1184,39 @@ button {
 }
 
 .race-start-btn:active {
+  transform: translate(-50%, -50%) scale(0.98);
+}
+
+/* Home button — invisible overlay on the baked Home pill in last.jpg.
+   Same pattern as race-start-btn: the JPG draws the button, we only
+   intercept clicks + give hover feedback. */
+.race-home-btn {
+  position: absolute;
+  left: 50%;
+  top: 86%;
+  transform: translate(-50%, -50%);
+  width: 24.4%;
+  height: 11%;
+  min-width: 11.25rem;
+  min-height: 3.25rem;
+  background: transparent;
+  color: transparent;
+  border: none;
+  border-radius: 999px;
+  font-size: 0;
+  cursor: pointer;
+  padding: 0;
+  outline: none;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.race-home-btn:hover {
+  transform: translate(-50%, -50%) scale(1.04);
+  box-shadow: 0 0 0 0.1875rem rgba(255, 255, 255, 0.35),
+    0 0.625rem 1.875rem rgba(0, 0, 0, 0.5);
+}
+
+.race-home-btn:active {
   transform: translate(-50%, -50%) scale(0.98);
 }
 

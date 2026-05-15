@@ -28,7 +28,7 @@
       <!-- Stage 2: Live race HUD -->
       <section class="race-screen race-screen--live" id="raceLiveScreen">
         <video class="race-bg race-bg--live" id="raceLiveVideo"
-               autoplay loop muted playsinline preload="auto">
+               autoplay muted playsinline preload="auto">
           <source src="assets/ride.mp4" type="video/mp4" />
         </video>
         <div class="race-overlay race-overlay--live"></div>
@@ -58,6 +58,12 @@
         </div>
 
         <a class="race-back race-back--live" href="circuit.html" aria-label="Exit Race">Exit</a>
+      </section>
+
+      <!-- Stage 3: Race finished — Mission Completed leaderboard -->
+      <section class="race-screen race-screen--finish" id="raceFinishScreen">
+        <div class="race-bg race-bg--finish"></div>
+        <button class="race-home-btn" id="raceHomeBtn" aria-label="Home"></button>
       </section>
     </main>
 

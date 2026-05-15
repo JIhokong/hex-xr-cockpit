@@ -520,7 +520,35 @@
 
   if (raceStartBtn) {
     raceStartBtn.addEventListener("click", function () {
+      // Unmute the live-race video on this user gesture so audio plays.
+      // The <video> ships with `muted` to satisfy autoplay policy; once
+      // the user clicks Start, the browser allows sound.
+      var raceLiveVideo = document.getElementById("raceLiveVideo");
+      if (raceLiveVideo) {
+        raceLiveVideo.muted = false;
+        raceLiveVideo.volume = 0.85;
+        // play() returns a promise that may reject if the gesture chain
+        // is broken — swallow it, the video will keep playing visually.
+        var p = raceLiveVideo.play();
+        if (p && typeof p.catch === "function") p.catch(function () {});
+      }
       startCountdown(startLiveRace);
+    });
+  }
+
+  /* -------- Race finish — Last.jpg leaderboard after ride.mp4 ends */
+  var raceLiveVideoEl = document.getElementById("raceLiveVideo");
+  var raceFinishScreen = document.getElementById("raceFinishScreen");
+  if (raceLiveVideoEl && raceFinishScreen) {
+    raceLiveVideoEl.addEventListener("ended", function () {
+      if (raceLiveScreen) raceLiveScreen.classList.remove("active");
+      raceFinishScreen.classList.add("active");
+    });
+  }
+  var raceHomeBtn = document.getElementById("raceHomeBtn");
+  if (raceHomeBtn) {
+    raceHomeBtn.addEventListener("click", function () {
+      window.location.href = "index.html";
     });
   }
 
