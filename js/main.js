@@ -14,92 +14,29 @@
 
   /* -------- Customize: Paint / Driving style / Wheel -------- */
   var paintGrid = document.getElementById("paintGrid");
-  var carTint = document.getElementById("carTint");
+  var carImage = document.getElementById("carImage");
+  var currentCarColor = "black";
 
-  function hexToRgba(hex, alpha) {
-    var h = hex.replace("#", "");
-    var r = parseInt(h.substring(0, 2), 16);
-    var g = parseInt(h.substring(2, 4), 16);
-    var b = parseInt(h.substring(4, 6), 16);
-    return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
-  }
-
-  function hexToHsl(hex) {
-    var h = hex.replace("#", "");
-    var r = parseInt(h.substring(0, 2), 16) / 255;
-    var g = parseInt(h.substring(2, 4), 16) / 255;
-    var b = parseInt(h.substring(4, 6), 16) / 255;
-    var max = Math.max(r, g, b), min = Math.min(r, g, b);
-    var l = (max + min) / 2, s;
-    if (max === min) {
-      s = 0;
-    } else {
-      var d = max - min;
-      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-    }
-    return { s: s * 100, l: l * 100 };
-  }
-
-  /* Generate a body-only alpha mask from car.png: opaque only on the
-     mid-tone pixels (silver body), transparent on bright pixels (white
-     bg) and dark pixels (tires). Set as the mask-image for #carTint. */
-  function setupBodyMask() {
-    if (!carTint) return;
-    var img = new Image();
-    img.crossOrigin = "anonymous";
-    img.onload = function () {
-      var c = document.createElement("canvas");
-      c.width = img.naturalWidth;
-      c.height = img.naturalHeight;
-      var ctx = c.getContext("2d");
-      ctx.drawImage(img, 0, 0);
-      var d = ctx.getImageData(0, 0, c.width, c.height);
-      var data = d.data;
-      for (var i = 0; i < data.length; i += 4) {
-        var lum = (data[i] + data[i + 1] + data[i + 2]) / 3;
-        var alpha;
-        if (lum > 240 || lum < 45) {
-          alpha = 0; // hide bright bg + dark tires
-        } else {
-          var distFromEdge = Math.min(lum - 45, 240 - lum);
-          alpha = Math.min(255, distFromEdge * 6);
-        }
-        data[i] = 255;
-        data[i + 1] = 255;
-        data[i + 2] = 255;
-        data[i + 3] = alpha;
-      }
-      ctx.putImageData(d, 0, 0);
-      var url = c.toDataURL("image/png");
-      carTint.style.maskImage = "url(" + url + ")";
-      carTint.style.webkitMaskImage = "url(" + url + ")";
-      carTint.style.maskMode = "alpha";
-      carTint.style.webkitMaskMode = "alpha";
-      carTint.style.maskSize = "contain";
-      carTint.style.webkitMaskSize = "contain";
-      carTint.style.maskPosition = "center";
-      carTint.style.webkitMaskPosition = "center";
-      carTint.style.maskRepeat = "no-repeat";
-      carTint.style.webkitMaskRepeat = "no-repeat";
+  /* Swap the F1 car body to a pre-rendered color image. Each click loads
+     `car_<name>.png` and cross-fades via opacity transition — no CSS
+     filter / blend mode / tint overlay. */
+  function setCarColor(name) {
+    if (!carImage || !name || name === currentCarColor) return;
+    currentCarColor = name;
+    var src = "assets/car_" + name + ".png";
+    // Preload to avoid a flash of empty image during fade.
+    var pre = new Image();
+    pre.onload = function () {
+      carImage.style.opacity = "0";
+      // After the fade-out finishes, swap src and fade back in.
+      setTimeout(function () {
+        carImage.src = src;
+        // Force layout before re-opacity so the transition runs.
+        void carImage.offsetWidth;
+        carImage.style.opacity = "1";
+      }, 200);
     };
-    img.src = "assets/car.png";
-  }
-  if (carTint) setupBodyMask();
-
-  function applyCarColor(color) {
-    if (!carTint) return;
-    var hsl = hexToHsl(color);
-    var isGrayscale = hsl.s < 5;
-    if (isGrayscale) {
-      // For white/black/gray, color blend mode does nothing (S=0).
-      // Use normal alpha overlay so the body actually changes luminance.
-      carTint.style.mixBlendMode = "normal";
-      carTint.style.backgroundColor = hexToRgba(color, 0.85);
-    } else {
-      // Chromatic — preserve underlying shading via color blend.
-      carTint.style.mixBlendMode = "color";
-      carTint.style.backgroundColor = hexToRgba(color, 0.85);
-    }
+    pre.src = src;
   }
 
   if (paintGrid) {
@@ -109,7 +46,7 @@
       paintGrid.querySelectorAll(".swatch-cell")
         .forEach(function (s) { s.classList.remove("active"); });
       btn.classList.add("active");
-      applyCarColor(btn.dataset.color);
+      setCarColor(btn.dataset.car);
     });
   }
 

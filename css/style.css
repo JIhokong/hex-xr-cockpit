@@ -312,22 +312,32 @@ button {
   color: var(--ink);
 }
 
-/* Crop the helmet portion of the reference image.
-   Reference is 5760x3240; helmet bbox ~ x:272-1396, y:1077-2200. */
+/* Helmet — dedicated transparent PNG (size + position kept from prior). */
 .device-img.helmet {
   width: 18rem;
   height: 18rem;
-  background-size: 80.625rem auto;
-  background-position: -2.6875rem -13.75rem;
+  background-image: url("../assets/helmet-2.png");
+  background-size: contain;
+  background-position: center;
+  /* PNG already has transparent edges; skip the multiply + radial mask
+     used for the composite reference.jpg crop. */
+  mix-blend-mode: normal;
+  -webkit-mask-image: none;
+  mask-image: none;
+  filter: none;
 }
 
-/* Crop the handle portion.
-   Handle bbox ~ x:1615-2646, y:1257-2114. */
+/* Handle — dedicated transparent PNG. */
 .device-img.handle {
   width: 16rem;
   height: 16rem;
-  background-size: 86.375rem auto;
-  background-position: -24rem -17.3125rem;
+  background-image: url("../assets/handle-2.png");
+  background-size: contain;
+  background-position: center;
+  mix-blend-mode: normal;
+  -webkit-mask-image: none;
+  mask-image: none;
+  filter: none;
 }
 
 .device-caption {
@@ -341,7 +351,7 @@ button {
   position: relative;
   padding-left: 10rem;
   z-index: 2;
-  transform: translateY(-1.4375rem);
+  transform: translate(5%, -1.4375rem);
 }
 
 .welcome-right h2 {
@@ -372,7 +382,7 @@ button {
 
 .connector-line {
   position: absolute;
-  top: 38%;
+  top: 35%;
   right: 0;
   width: 48%;
   height: auto;
@@ -616,15 +626,16 @@ button {
 .car-image {
   position: absolute;
   inset: 0;
-  background-image: url("../assets/car.png");
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
-  mix-blend-mode: multiply;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
   transform: translateY(2%) rotateY(var(--car-rotate, 0deg));
   transform-origin: 50% 70%;
-  will-change: transform;
+  will-change: transform, opacity;
   z-index: 2;
+  opacity: 1;
+  transition: opacity 0.25s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
 /* Paint tint — solid color rectangle that uses mix-blend-mode: color to
@@ -1035,13 +1046,17 @@ button {
 .race-bg {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+  object-fit: cover;
+  object-position: center;
 }
 
 .race-bg--start { background-image: url("../assets/race-1.jpg"); }
-.race-bg--live  { background-image: url("../assets/race-3.jpg"); }
+/* .race-bg--live is a <video> element — no background-image needed. */
 
 .race-overlay {
   position: absolute;

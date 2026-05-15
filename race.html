@@ -27,7 +27,10 @@
 
       <!-- Stage 2: Live race HUD -->
       <section class="race-screen race-screen--live" id="raceLiveScreen">
-        <div class="race-bg race-bg--live"></div>
+        <video class="race-bg race-bg--live" id="raceLiveVideo"
+               autoplay loop muted playsinline preload="auto">
+          <source src="assets/ride.mp4" type="video/mp4" />
+        </video>
         <div class="race-overlay race-overlay--live"></div>
 
         <!-- Top-left: lap timer card -->

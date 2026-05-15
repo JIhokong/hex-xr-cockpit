@@ -33,39 +33,39 @@
             <section class="panel-section">
               <h3 class="panel-title">Paint</h3>
               <div class="swatch-grid" id="paintGrid">
-                <button class="swatch-cell" data-color="#ffffff" aria-label="White">
+                <button class="swatch-cell" data-car="white" data-color="#ffffff" aria-label="White">
                   <span class="swatch-dot swatch-dot--white"></span>
                   <span class="swatch-label">White</span>
                 </button>
-                <button class="swatch-cell active" data-color="#1a1a1a" aria-label="Black">
+                <button class="swatch-cell active" data-car="black" data-color="#1a1a1a" aria-label="Black">
                   <span class="swatch-dot" style="background:#1a1a1a;"></span>
                   <span class="swatch-label">Black</span>
                 </button>
-                <button class="swatch-cell" data-color="#9a9a9a" aria-label="Gray">
+                <button class="swatch-cell" data-car="gray" data-color="#9a9a9a" aria-label="Gray">
                   <span class="swatch-dot" style="background:#9a9a9a;"></span>
                   <span class="swatch-label">Gray</span>
                 </button>
-                <button class="swatch-cell" data-color="#e63b2e" aria-label="Red">
+                <button class="swatch-cell" data-car="red" data-color="#e63b2e" aria-label="Red">
                   <span class="swatch-dot" style="background:#e63b2e;"></span>
                   <span class="swatch-label">Red</span>
                 </button>
-                <button class="swatch-cell" data-color="#ffd02f" aria-label="Yellow">
+                <button class="swatch-cell" data-car="yellow" data-color="#ffd02f" aria-label="Yellow">
                   <span class="swatch-dot" style="background:#ffd02f;"></span>
                   <span class="swatch-label">Yellow</span>
                 </button>
-                <button class="swatch-cell" data-color="#3cba54" aria-label="Green">
+                <button class="swatch-cell" data-car="green" data-color="#3cba54" aria-label="Green">
                   <span class="swatch-dot" style="background:#3cba54;"></span>
                   <span class="swatch-label">Green</span>
                 </button>
-                <button class="swatch-cell" data-color="#3b82f6" aria-label="Blue">
+                <button class="swatch-cell" data-car="blue" data-color="#3b82f6" aria-label="Blue">
                   <span class="swatch-dot" style="background:#3b82f6;"></span>
                   <span class="swatch-label">Blue</span>
                 </button>
-                <button class="swatch-cell" data-color="#8a5cf6" aria-label="Purple">
+                <button class="swatch-cell" data-car="purple" data-color="#8a5cf6" aria-label="Purple">
                   <span class="swatch-dot" style="background:#8a5cf6;"></span>
                   <span class="swatch-label">Purple</span>
                 </button>
-                <button class="swatch-cell" data-color="#ff9ec7" aria-label="Pink">
+                <button class="swatch-cell" data-car="pink" data-color="#ff9ec7" aria-label="Pink">
                   <span class="swatch-dot" style="background:#ff9ec7;"></span>
                   <span class="swatch-label">Pink</span>
                 </button>
@@ -85,8 +85,7 @@
           <!-- CENTER: car stage + Done -->
           <section class="car-center">
             <div class="car-stage" id="carStage">
-              <div class="car-image" id="carImage" aria-label="F1 car preview"></div>
-              <div class="car-tint" id="carTint" aria-hidden="true"></div>
+              <img class="car-image" id="carImage" src="assets/car_black.png" alt="F1 car preview" />
               <div class="car-wheels-layer" aria-hidden="true">
                 <div class="wheel-slot wheel-slot--front">
                   <img class="wheel-slot-img" id="frontWheelImg" alt="" />
