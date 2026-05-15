@@ -316,7 +316,7 @@ button {
 .device-img.helmet {
   width: 18rem;
   height: 18rem;
-  background-image: url("../assets/helmet_last.png");
+  background-image: url("../assets/helmet5.png");
   background-size: contain;
   background-position: center;
   /* PNG already has transparent edges; skip the multiply + radial mask
