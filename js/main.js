@@ -463,6 +463,14 @@
   function startLiveRace() {
     if (raceStartScreen) raceStartScreen.classList.remove("active");
     if (raceLiveScreen) raceLiveScreen.classList.add("active");
+    // Play the video from the top now that the live screen is showing.
+    // Done here (not on Start click) so user sees the full 7s clip.
+    var v = document.getElementById("raceLiveVideo");
+    if (v) {
+      try { v.currentTime = 0; } catch (_) {}
+      var pp = v.play();
+      if (pp && typeof pp.catch === "function") pp.catch(function () {});
+    }
     runTelemetry();
   }
 
@@ -520,17 +528,16 @@
 
   if (raceStartBtn) {
     raceStartBtn.addEventListener("click", function () {
-      // Unmute the live-race video on this user gesture so audio plays.
-      // The <video> ships with `muted` to satisfy autoplay policy; once
-      // the user clicks Start, the browser allows sound.
+      // Capture user gesture for unmuted playback. We pause + rewind +
+      // unmute here so when startLiveRace fires the play() (after the
+      // 3.4s countdown), the browser still considers it user-activated
+      // and lets audio through. Don't play yet — wait for live screen.
       var raceLiveVideo = document.getElementById("raceLiveVideo");
       if (raceLiveVideo) {
+        try { raceLiveVideo.pause(); } catch (_) {}
+        try { raceLiveVideo.currentTime = 0; } catch (_) {}
         raceLiveVideo.muted = false;
         raceLiveVideo.volume = 0.85;
-        // play() returns a promise that may reject if the gesture chain
-        // is broken — swallow it, the video will keep playing visually.
-        var p = raceLiveVideo.play();
-        if (p && typeof p.catch === "function") p.catch(function () {});
       }
       startCountdown(startLiveRace);
     });
@@ -541,7 +548,14 @@
   var raceFinishScreen = document.getElementById("raceFinishScreen");
   if (raceLiveVideoEl && raceFinishScreen) {
     raceLiveVideoEl.addEventListener("ended", function () {
-      if (raceLiveScreen) raceLiveScreen.classList.remove("active");
+      // Only transition to finish if the user actually reached the live
+      // phase. Without this guard, the initial autoplay playthrough
+      // (which happens silently while the user reads the Start screen)
+      // would prematurely show the finish leaderboard.
+      if (!raceLiveScreen || !raceLiveScreen.classList.contains("active")) {
+        return;
+      }
+      raceLiveScreen.classList.remove("active");
       raceFinishScreen.classList.add("active");
     });
   }
